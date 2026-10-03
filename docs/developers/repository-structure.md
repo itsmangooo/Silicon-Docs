@@ -3,7 +3,7 @@
 ```text
 Silicon/
 ├── backend/
-│   ├── cmd/silicon/             control-plane composition root
+│   ├── cmd/silicon/             platform composition root
 │   ├── cmd/silicon-updater/     narrowly scoped update runner
 │   ├── db/migrations/           embedded forward SQL migrations
 │   ├── internal/                domain, store, jobs, and providers

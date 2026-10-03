@@ -17,7 +17,7 @@ flowchart TB
   Hub --> Policy
 ```
 
-Private keys are generated and stored only on each host. The control plane stores public keys. CoreDNS on the hub serves `.internal` records. Docker binds attached services to member overlay addresses and injects the private DNS resolver/search domain.
+Private keys are generated and stored only on each host. Silicon stores public keys. CoreDNS on the hub serves `.internal` records. Docker binds attached services to member overlay addresses and injects the private DNS resolver/search domain.
 
 Policy identifies a source application by the member overlay address. Same-project service traffic is allowed; cross-project traffic is denied unless an explicit same-organization application-to-service rule exists. The current model therefore permits one attached application per member and one Silicon Network per application.
 

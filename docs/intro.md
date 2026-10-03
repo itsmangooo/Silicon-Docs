@@ -6,7 +6,7 @@ sidebar_position: 1
 
 # Silicon documentation
 
-Silicon is a self-hosted infrastructure and application control plane. It manages organization-scoped projects, environments, applications, deployments, Docker targets, GitHub sources, Cloudflare routing, AWS resources, secrets, audit history, and opt-in WireGuard private networks.
+Silicon is a self-hosted infrastructure and application platform. It manages organization-scoped projects, environments, applications, deployments, Docker targets, GitHub sources, Cloudflare routing, AWS resources, secrets, audit history, and opt-in WireGuard private networks.
 
 This site is independent from a Silicon installation. Use it to:
 
