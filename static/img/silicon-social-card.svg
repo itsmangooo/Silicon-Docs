@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Silicon Documentation</title>
+  <desc id="desc">Technical documentation for the Silicon self-hosted infrastructure platform.</desc>
+  <rect width="1200" height="630" fill="#0d1110"/>
+  <path d="M177 128l14 1 12 5 120 70 6 6 1 10-4 7-385 214-9 9-1 8 4 8 9 6 12 1 6-2 152-80 8-2 11 1 11 4 109 66 10 9 5 8 3 14v158l-2 8-5 10-10 9-56 29-160 88-10 4-10 1-132-83-4-5v-7l3-5 337-172 9-11 1-10-3-5-4-4-9 1-149 76-18 2-11-3-139-85-14-13-3-10 1-157 5-11 10-8 278-157zm244 138h7l8 4 4 5 3 9-1 363-5 11-11 10-103 61-8 3-7-1-7-5-2-7 1-376 4-10 11-9z" transform="translate(210 -54) scale(.78)" fill="#69ddb0"/>
+  <text x="515" y="278" fill="#eef8f3" font-family="Inter,Segoe UI,sans-serif" font-size="68" font-weight="600">Silicon</text>
+  <text x="518" y="352" fill="#69ddb0" font-family="Inter,Segoe UI,sans-serif" font-size="34" font-weight="500">Documentation</text>
+  <text x="518" y="415" fill="#9eb0a9" font-family="Inter,Segoe UI,sans-serif" font-size="24">Operate · understand · contribute</text>
+</svg>
