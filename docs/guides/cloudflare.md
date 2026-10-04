@@ -4,6 +4,8 @@ Cloudflare DNS and Cloudflare Tunnel are separate, optional capabilities behind 
 
 Silicon does not provide a reverse proxy or automatic TLS in direct DNS mode. Cloudflare Tunnel is optional and is not described as universally more secure.
 
+This guide covers organization application domains. To publish the Silicon installation itself, use the separate [installation public access guide](public-access.md).
+
 ## Before you begin
 
 You need:

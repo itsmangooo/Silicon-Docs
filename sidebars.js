@@ -22,6 +22,7 @@ const sidebars = {
         'guides/aws',
         'guides/github',
         'guides/cloudflare',
+        'guides/public-access',
         'guides/domains',
         'guides/configuration',
         'guides/costs-budgets',
