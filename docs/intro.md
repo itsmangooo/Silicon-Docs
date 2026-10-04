@@ -12,7 +12,7 @@ This site is independent from a Silicon installation. Use it to:
 
 - [install Silicon](getting-started/installation.md) and complete a first deployment;
 - operate [self-hosted](guides/self-hosted.md) or [AWS-backed](guides/aws.md) workloads;
-- configure [GitHub](guides/github.md), [Cloudflare](guides/cloudflare.md), and [private networking](guides/private-networking.md);
+- configure [GitHub](guides/github.md), [Cloudflare](guides/cloudflare.md), [system email and password recovery](guides/system-email.md), and [private networking](guides/private-networking.md);
 - understand the [modular-monolith architecture](developers/architecture.md);
 - set up a source checkout and [contribute](developers/contributing.md).
 

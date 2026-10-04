@@ -9,6 +9,9 @@ flowchart LR
   API --> Store[internal/store]
   Store --> DB[(PostgreSQL)]
   API --> Audit[Audit writer]
+  API --> Mail[MailProvider]
+  Mail --> MailQueue[(Encrypted mail queue)]
+  MailQueue --> Store
   Jobs[internal/jobs] --> Store
   Jobs --> Runtime[RuntimeProvider]
   Jobs --> AWS[AWS provider]
@@ -20,7 +23,9 @@ flowchart LR
   Network --> WireGuard[WireGuard/CoreDNS/nftables]
 ```
 
-`backend/cmd/silicon/main.go` is the composition boundary. It loads configuration, opens pgx, runs migrations, constructs concrete adapters, and starts deployment, AWS, and network runners plus the HTTP server.
+`backend/cmd/silicon/main.go` is the composition boundary. It loads configuration, opens pgx, runs migrations, constructs concrete adapters, and starts deployment, AWS, network, and system-mail workers plus the HTTP server.
+
+`backend/internal/providers/mail` defines the provider-neutral send/test/capability contract. Concrete Resend, Postmark, Mailgun, Amazon SES, and SMTP adapters stay behind it. `backend/internal/mailservice` owns normalized provider configuration, recovery templates, encryption boundaries, and retry processing; `backend/internal/store/mail.go` owns durable queue, rate-limit, and transactional reset persistence.
 
 Business code depends on contracts in `backend/internal/providers/*`; concrete cloud/runtime implementation details remain in adapters. Provider selection belongs at composition/dispatch boundaries rather than scattered `if provider == ...` branches.
 

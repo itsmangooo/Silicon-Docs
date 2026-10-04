@@ -2,7 +2,7 @@
 
 This is the independent public documentation website for [Silicon](https://github.com/itsmangooo/Silicon). It is a static Docusaurus project: it does not import the Silicon frontend, call the Silicon API, require PostgreSQL, or require a running Silicon installation.
 
-Current operator guides include installation-level [custom-domain access through Cloudflare Tunnel](docs/guides/public-access.md), application DNS/Tunnel routing, GitHub deployment, self-hosted and AWS targets, private networking, safe updates, and security operations.
+Current operator guides include installation-level [custom-domain access through Cloudflare Tunnel](docs/guides/public-access.md), [system email and password recovery](docs/guides/system-email.md), application DNS/Tunnel routing, GitHub deployment, self-hosted and AWS targets, private networking, safe updates, and security operations.
 
 ## Work locally
 
