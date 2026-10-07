@@ -1,4 +1,5 @@
 import {themes as prismThemes} from 'prism-react-renderer'
+import {createLegacyDocRedirects} from './config/legacy-doc-redirects.mjs'
 
 const baseUrl = process.env.DOCS_BASE_URL || '/Silicon-Docs/'
 const siteUrl = process.env.DOCS_URL || 'https://itsmangooo.github.io'
@@ -14,12 +15,17 @@ const config = {
   projectName: 'Silicon-Docs',
   trailingSlash: false,
   onBrokenLinks: 'throw',
+  onBrokenAnchors: 'throw',
   markdown: {
     mermaid: true,
     hooks: {onBrokenMarkdownLinks: 'throw'},
   },
   themes: ['@docusaurus/theme-mermaid'],
   plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {createRedirects: createLegacyDocRedirects},
+    ],
     [
       '@cmfcmf/docusaurus-search-local',
       {
@@ -35,7 +41,7 @@ const config = {
       'classic',
       {
         docs: {
-          routeBasePath: '/',
+          routeBasePath: 'docs',
           sidebarPath: './sidebars.js',
           breadcrumbs: true,
           editUrl: 'https://github.com/itsmangooo/Silicon-Docs/edit/main/',
@@ -55,10 +61,10 @@ const config = {
       title: 'Silicon Docs',
       logo: {alt: 'Silicon', src: 'img/silicon-mark.svg'},
       items: [
-        {to: '/getting-started/installation', label: 'Get started', position: 'left'},
-        {to: '/guides/self-hosted', label: 'Operator guides', position: 'left'},
-        {to: '/developers/source-setup', label: 'Developers', position: 'left'},
-        {to: '/security/overview', label: 'Security', position: 'left'},
+        {to: '/docs/getting-started/installation', label: 'Get started', position: 'left'},
+        {to: '/docs/guides/self-hosted', label: 'Operator guides', position: 'left'},
+        {to: '/docs/developers/source-setup', label: 'Developers', position: 'left'},
+        {to: '/docs/security/overview', label: 'Security', position: 'left'},
         {href: 'https://github.com/itsmangooo/Silicon', label: 'Silicon on GitHub', position: 'right'},
       ],
     },
@@ -68,17 +74,17 @@ const config = {
         {
           title: 'Use Silicon',
           items: [
-            {label: 'Installation', to: '/getting-started/installation'},
-            {label: 'First deployment', to: '/getting-started/first-deployment'},
-            {label: 'Private networking', to: '/guides/private-networking'},
+            {label: 'Installation', to: '/docs/getting-started/installation'},
+            {label: 'First deployment', to: '/docs/getting-started/first-deployment'},
+            {label: 'Private networking', to: '/docs/guides/private-networking'},
           ],
         },
         {
           title: 'Develop Silicon',
           items: [
-            {label: 'Source setup', to: '/developers/source-setup'},
-            {label: 'Architecture', to: '/developers/architecture'},
-            {label: 'Contributing', to: '/developers/contributing'},
+            {label: 'Source setup', to: '/docs/developers/source-setup'},
+            {label: 'Architecture', to: '/docs/developers/architecture'},
+            {label: 'Contributing', to: '/docs/developers/contributing'},
           ],
         },
         {
@@ -86,7 +92,7 @@ const config = {
           items: [
             {label: 'GitHub', href: 'https://github.com/itsmangooo/Silicon'},
             {label: 'Releases', href: 'https://github.com/itsmangooo/Silicon/releases'},
-            {label: 'Security', to: '/security/overview'},
+            {label: 'Security', to: '/docs/security/overview'},
           ],
         },
       ],

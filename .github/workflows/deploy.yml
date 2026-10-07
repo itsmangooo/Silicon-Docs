@@ -26,7 +26,17 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm test
       - run: npm run docs:build
+      - run: npm run validate:build
+      - name: Verify root-domain deployment
+        env:
+          DOCS_BASE_URL: /
+          DOCS_URL: https://docs.example.com
+          DOCS_BUILD_DIR: build-root
+        run: |
+          npm run docs:build -- --out-dir build-root
+          npm run validate:build
       - if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v5
       - if: github.event_name != 'pull_request'

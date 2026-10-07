@@ -1,0 +1,16 @@
+.silicon-landing .landing-cta,.silicon-landing .landing-menu-toggle,.silicon-landing .command-label button {
+  transition: color var(--motion-fast), background-color var(--motion-fast), border-color var(--motion-fast), transform var(--motion-fast) var(--motion-ease);
+}
+.silicon-landing .landing-nav-links a {transition: color var(--motion-fast)}
+.silicon-landing .landing-reveal:focus-within {opacity: 1 !important; transform: none !important}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .silicon-landing .landing-cta:hover {transform: translateY(-1px)}
+  .silicon-landing .landing-cta:active {transform: translateY(0)}
+}
+@media (prefers-reduced-motion: reduce) {
+  .silicon-landing *, .silicon-landing *::before, .silicon-landing *::after {
+    animation: none !important; transition: none !important; scroll-behavior: auto !important;
+  }
+  .silicon-landing .landing-reveal {opacity: 1 !important; transform: none !important}
+  .silicon-landing .diagram-path {stroke-dasharray: none !important; stroke-dashoffset: 0 !important}
+}

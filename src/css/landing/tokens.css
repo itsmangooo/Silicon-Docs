@@ -1,0 +1,43 @@
+.silicon-landing {
+  --landing-bg: #121616;
+  --landing-surface: #191e1e;
+  --landing-surface-quiet: #151a1a;
+  --landing-text: #f0f1eb;
+  --landing-muted: #a2adaa;
+  --landing-faint: #7e8986;
+  --landing-accent: #a0e6c1;
+  --landing-accent-hover: #b6f0d0;
+  --landing-border: #303a37;
+  --landing-border-strong: #52635c;
+  --landing-accent-ink: #12251c;
+  --landing-font: 'Inter Variable', Inter, system-ui, sans-serif;
+  --landing-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --landing-rail: min(70vw, 1280px);
+  --landing-radius: 3px;
+  --landing-space-1: 4px;
+  --landing-space-2: 8px;
+  --landing-space-3: 12px;
+  --landing-space-4: 16px;
+  --landing-space-5: 24px;
+  --landing-space-6: 32px;
+  --landing-space-7: 48px;
+  --landing-space-8: 64px;
+  --landing-space-9: 96px;
+  --landing-space-10: 128px;
+  --motion-ease: cubic-bezier(.22, 1, .36, 1);
+  --motion-ease-values: .22, 1, .36, 1;
+  --motion-fast: 160ms;
+  --motion-base: 500ms;
+  --motion-slow: 700ms;
+  --motion-stagger: 70ms;
+  --motion-travel: 18px;
+  --motion-travel-mobile: 8px;
+  --motion-media-scale: .985;
+}
+
+@media (max-width: 1200px) {
+  .silicon-landing {--landing-rail: calc(100% - 64px)}
+}
+@media (max-width: 767px) {
+  .silicon-landing {--landing-rail: calc(100% - 32px)}
+}
