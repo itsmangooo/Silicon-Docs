@@ -303,14 +303,14 @@
   .network-story {margin-top: 24px;}
   .story-stage-list {grid-template-columns: 1fr; gap: 0;}
   .stage-detail h3 {font-size: 23px; margin-top: 8px;}
-  .network-topology {padding: 24px 12px; border-radius: 24px;}
+  .network-topology {padding: 24px 12px 56px; border-radius: 24px;}
   .diagram-caption {font-size: 10px;}
   .network-map {aspect-ratio: 940 / 660;}
   .network-paths {height: 71%;}
-  .network-node {font-size: 11px;}
+  .network-node {font-size: 11px; min-width: 0;}
   .node-symbol {width: 34px; height: 34px; font-size: 19px; border-radius: 8px;}
   .network-node small {font-size: 8px;}
-  .network-name {font-size: 7px; margin-top: 6px;}
+  .network-name {font-size: 7px; margin-top: 6px; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
   .network-hub {top: 46%;}
   .hub-mark {width: 34px; height: 34px; font-size: 22px; border-radius: 10px;}
   .network-hub strong {font-size: 12px;}
