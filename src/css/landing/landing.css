@@ -36,27 +36,31 @@
 .site-button--dark {background: var(--ink); color: var(--foreground) !important;}
 .site-button--dark:hover {background: var(--site-bg);}
 .floating-header {position: fixed; top: 20px; inset-inline: 0; z-index: 100; pointer-events: none;}
-.floating-nav {pointer-events: auto; position: relative; width: min(84vw, 1180px); margin-inline: auto; display: flex; align-items: center; gap: var(--space-4); padding: 13px 16px 13px 24px; border-radius: 18px; transition: background-color .3s, border-color .3s;}
-.glass-layer {background: var(--surface); border: 1px solid rgba(220, 235, 226, .12); box-shadow: inset 0 1px 0 rgba(255,255,255,.04); color: var(--foreground);}
-@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .landing-root .glass-layer {background: var(--glass-bg); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);}
-  .landing-root .is-scrolled .floating-nav {background: rgba(11,18,14,.9); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);}
-}
+.floating-nav {pointer-events: auto; position: relative; width: min(84vw, 1180px); margin-inline: auto; display: flex; align-items: center; gap: var(--space-4); padding: 18px 16px 18px 24px; border-radius: 18px; background: var(--nav-bg); border: 1px solid var(--rule); transition: padding .3s, border-color .3s;}
+.is-scrolled .floating-nav {padding-block: 12px; border-color: var(--rule-strong);}
+.technical-label {background: var(--nav-bg); border: 1px solid var(--rule-strong); color: var(--foreground);}
 .site-brand {display: inline-flex; gap: 12px; align-items: center; font-size: 21px; font-weight: 500; letter-spacing: -.03em; flex-shrink: 0;}
 .site-brand img {object-fit: contain;}
 .nav-links {display: flex; gap: 28px; margin-left: auto; align-items: center; font-size: 14px;}
-.nav-links a:hover, .footer-links a:hover {color: var(--brand);}
+.nav-links a, .footer-links a {position: relative;}
+.nav-links a::after, .footer-links a::after {content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .25s;}
+.nav-links a:hover::after, .footer-links a:hover::after {transform: scaleX(1);}
 .nav-install {margin-left: 12px; min-height: 44px; padding-block: 11px;}
 .nav-toggle {display: none; border: 1px solid var(--rule); background: transparent; color: var(--foreground); border-radius: var(--radius-control); font-size: 21px; width: 44px; height: 44px;}
 .hero-chapter {padding-top: 162px; position: relative;}
 .hero-billboard {position: relative; padding-bottom: 140px;}
 .hero-billboard > .chapter-label {margin-bottom: 36px !important; color: var(--muted);}
 .hero-title {font-size: var(--font-hero);}
-.hero-title .line-reveal__mask:last-child {color: var(--brand);}
 .hero-aside {position: absolute; right: 0; top: calc(2.16 * var(--font-hero) + 58px); width: 33%; max-width: 500px;}
 .hero-aside .lead {font-size: clamp(18px, 1.4vw, 23px);}
 .hero-aside .action-row {margin-block: 24px 16px;}
 .hero-proof {width: var(--stage-width); margin-inline: auto !important; position: relative; z-index: 2; margin-bottom: -108px !important;}
+.hero-media-stage {position: relative;}
+.stage-structure__metadata {display: flex; justify-content: space-between; gap: 16px; color: var(--muted); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 10px; letter-spacing: .08em; padding-block: 16px; text-transform: uppercase;}
+.stage-structure__metadata span:last-child {text-align: right;}
+.stage-structure__lines {position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; z-index: 3;}
+.stage-structure__line {stroke: var(--rule-strong); stroke-width: 1;}
+.stage-structure__corner {stroke: var(--line); stroke-width: 1.5;}
 .product-media__link {display: block; overflow: hidden; border: 1px solid var(--rule); border-radius: var(--radius-media); background: var(--site-bg);}
 .product-media img {display: block; width: 100%; height: auto;}
 .product-media--crop .product-media__link {aspect-ratio: 1.92;}
@@ -64,8 +68,8 @@
 .product-media figcaption {display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; font-size: 11px; font-weight: 400; margin-top: 14px; color: var(--muted);}
 .product-media figcaption a {text-decoration: underline; text-underline-offset: 4px;}
 .chapter--graphite {--chapter-background: var(--chapter-graphite);}
-.chapter--emerald {--chapter-background: var(--chapter-green);}
-.chapter--paper {--chapter-background: var(--paper); color: var(--ink); color-scheme: light;}
+.chapter--charcoal {--chapter-background: var(--network-bg);}
+.chapter--paper {--chapter-background: var(--paper); --rule: #b7b7b0; color: var(--ink); color-scheme: light;}
 .chapter--paper .small-note, .chapter--paper figcaption {color: var(--ink-muted);}
 .poster-chapter {padding-block: 212px 100px; border-radius: 72px 72px 48px 0; margin-top: 0;}
 .poster-title {font-size: clamp(60px, 7.7vw, 126px); max-width: 1100px;}
@@ -76,7 +80,7 @@
 .flow-graph {position: relative;}
 .flow-paths {display: block; width: 100%; height: 64px;}
 .flow-path-track, .transport-path-track {stroke: var(--rule); stroke-width: 1;}
-.flow-path, .transport-path {stroke: var(--brand); stroke-width: 1.5;}
+.flow-path, .transport-path {stroke: var(--line); stroke-width: 1.5;}
 .flow-point, .transport-point {fill: var(--brand);}
 .flow-stages {display: grid; grid-template-columns: repeat(var(--flow-stage-count), 1fr); list-style: none; padding: 0; gap: 12px;}
 .flow-stage {font-size: 13px;}
@@ -84,7 +88,7 @@
 .flow-stage__detail {display: block; font-size: 10px; line-height: 1.5; color: var(--muted); margin-top: 8px;}
 .flow-stage__marker {display: none;}
 .poster-proof {position: relative; width: min(88vw, 1510px); margin: 0 0 64px max(4vw, calc((100vw - 1600px) / 2)) !important;}
-.media-callout {position: absolute; right: -24px; top: 44%; width: 240px; border-radius: 14px; padding: 18px 20px; pointer-events: none;}
+.media-callout {position: absolute; right: -24px; top: 44%; width: 240px; border-radius: 2px; padding: 18px 20px; pointer-events: none;}
 .media-callout::before {content: ''; position: absolute; width: 44px; height: 1px; background: var(--brand); left: -44px; top: 26px;}
 .media-callout::after {content: ''; position: absolute; width: 4px; height: 4px; background: var(--brand); left: -46px; top: 24px;}
 .media-callout > span {display: block; font-size: 12px; font-weight: 500; color: var(--brand); margin-bottom: 8px;}
@@ -93,7 +97,8 @@
 .fact-rail dt {font-size: 18px; font-weight: 500; letter-spacing: -.025em; margin-bottom: var(--space-2);}
 .fact-rail dd {margin: 0; font-size: 15px; line-height: 1.7;}
 .servers-chapter {padding-block: 100px;}
-.servers-frame {display: grid; grid-template-columns: 1.6fr 1fr; gap: var(--space-6) var(--space-5); padding: 64px 4vw; border: 1px solid var(--rule); border-radius: 64px 24px 64px 24px; background: var(--surface);}
+.servers-frame {position: relative; isolation: isolate; display: grid; grid-template-columns: 1.6fr 1fr; gap: var(--space-6) var(--space-5); padding: 64px 4vw; border-radius: 64px 24px 64px 24px;}
+.curved-stage__surface {position: absolute; inset: 0; z-index: -1; border: 1px solid var(--rule); border-radius: inherit; background: var(--nav-bg); pointer-events: none;}
 .servers-heading {grid-column: 1 / -1; margin-left: 15%;}
 .servers-title {font-size: clamp(48px, 5.9vw, 102px);}
 .servers-proof {align-self: end; margin-left: -6vw !important; width: calc(100% + 6vw);}
@@ -107,7 +112,7 @@
 .transport-labels strong {font-weight: 500; display: block;}
 .transport-labels p span {font-size: 9px; display: block; color: var(--muted); margin-top: 6px;}
 .transport-methods {list-style: none; padding: 0; margin: 0; height: 100%; display: flex; flex-direction: column; justify-content: space-around; font-size: 10px;}
-.transport-method {background: var(--surface); width: max-content; max-width: 100%; padding: 2px 4px; margin-inline: auto; color: var(--brand);}
+.transport-method {background: var(--nav-bg); width: max-content; max-width: 100%; padding: 2px 4px; margin-inline: auto; color: var(--brand);}
 .servers-copy .lead {margin-bottom: var(--space-5); font-size: clamp(18px, 1.4vw, 23px);}
 .servers-copy .fact-rail {grid-template-columns: 1fr; gap: var(--space-4);}
 .servers-copy .fact-rail dd {color: var(--muted);}
@@ -119,7 +124,7 @@
 .cloud-proof .product-media__link {aspect-ratio: 1.65; border-radius: 40px 40px 16px 16px;}
 .cloud-footnote {display: flex; justify-content: space-between; align-items: start; gap: var(--space-5);}
 .cloud-footnote .small-note {max-width: 52%;}
-.network-chapter {padding-top: 112px; background: var(--network-bg); border-radius: 0 0 56px 56px;}
+.network-chapter {padding-top: 112px; border-radius: 0 0 56px 56px;}
 .network-title {font-size: var(--font-chapter);}
 .network-lead {margin-top: 32px !important; max-width: 750px;}
 .network-story {margin-top: 48px;}
@@ -142,7 +147,7 @@
 .network-map {position: relative; aspect-ratio: 940 / 470; margin-top: 20px;}
 .network-paths {position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible;}
 .network-path-track {stroke: var(--rule); stroke-width: 1;}
-.network-path {stroke: var(--brand); stroke-width: 2;}
+.network-path {stroke: var(--line); stroke-width: 2;}
 .network-nodes {position: absolute; top: 0; width: 100%; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;}
 .network-node {display: flex; flex-direction: column; align-items: center; text-align: center; opacity: .26; transition: opacity .5s; font-size: 16px;}
 .network-node.is-connected {opacity: 1;}
@@ -155,7 +160,7 @@
 .hub-mark img {filter: brightness(0);}
 .network-hub strong {font-weight: 500;}
 .network-hub small, .network-hub > span:last-child {font-size: 10px; color: var(--muted);}
-.network-hud {position: absolute; left: 0; right: 0; margin-inline: auto; bottom: -18px; width: max-content; max-width: calc(100% - 32px); padding: 12px 18px; border-radius: 12px; font-size: 11px; white-space: nowrap;}
+.network-hud {position: absolute; left: 0; right: 0; margin-inline: auto; bottom: -18px; width: max-content; max-width: calc(100% - 32px); padding: 12px 18px; border-radius: 2px; font-size: 11px; white-space: nowrap;}
 .hud-dot {display: inline-block; width: 5px; height: 5px; margin-right: 8px; background: var(--brand);}
 .hud-example {display: block; font-size: 9px; color: var(--muted); padding-left: 13px; margin-top: 3px;}
 .network-access {margin-top: 32px !important; text-align: center; font-size: 11px; color: var(--brand);}
@@ -165,33 +170,22 @@
 .is-static .story-progress {display: none;}
 .is-static .network-sticky {align-items: start;}
 .is-static .story-stage-list li {padding-block: 18px;}
-.architecture-chapter {padding-block: 100px 112px; background: var(--surface);}
+.architecture-chapter {padding-block: 100px 112px; background: var(--site-bg);}
 .architecture-heading .lead {margin-top: 32px;}
 .architecture-title {font-size: var(--font-chapter);}
-.architecture-schematic {position: relative; border: 1px solid var(--rule); border-radius: 48px 48px 0 48px; padding: 48px; margin-block: 56px 32px;}
-.architecture-paths {position: absolute; inset: 32px 24px auto; width: calc(100% - 48px); height: 640px; pointer-events: none;}
-.architecture-path {stroke: var(--rule); stroke-width: 1.2;}
-.architecture-core {position: absolute; top: 200px; left: 36%; width: 28%; text-align: center; background: var(--surface); z-index: 1; padding: 24px 12px;}
-.core-label {font-size: 10px; color: var(--muted); letter-spacing: .06em;}
-.architecture-core h3 {font-size: clamp(42px, 4.5vw, 72px); color: var(--brand); margin-top: 12px;}
-.architecture-core p {font-size: 12px; color: var(--muted); margin-top: 16px;}
-.core-contract {display: inline-block; font-size: 10px; margin-top: 20px; color: var(--brand);}
-.provider-bus {position: relative; display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: repeat(4, 140px); gap: 16px 0;}
-.provider-node {align-self: center; position: relative; background: var(--surface); border-bottom: 1px solid var(--rule); padding: 16px 12px; font-size: 14px; width: 90%;}
-.provider-node:nth-child(odd) {grid-column: 1;}
-.provider-node:nth-child(even) {grid-column: 3; justify-self: end;}
-.provider-bus dt {font-weight: 500; font-size: 16px;}
-.provider-bus dd {margin: 8px 0 0; color: var(--muted); font-size: 12px;}
-.architecture-extensions {padding-top: 24px; margin-top: 32px !important; border-top: 1px dashed var(--rule); color: var(--muted); font-size: 13px; max-width: 820px;}
-.architecture-extensions span {display: block; font-size: 11px; color: var(--foreground); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px;}
-.security-chapter {padding-block: 0 112px; background: var(--surface);}
+.security-chapter {padding-block: 0 112px; background: var(--site-bg);}
+.security-boundary {position: relative; padding: var(--space-5); border: 1px solid var(--rule); border-radius: 32px 0 32px 0; background: var(--nav-bg);}
+.security-boundary-rules {position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;}
+.security-boundary-rule {stroke: var(--line); stroke-width: 1;}
+.security-statement, .security-mechanisms {position: relative; z-index: 1;}
 .security-composition {display: grid; grid-template-columns: 1.3fr 1fr; gap: 10%;}
 .security-title {font-size: clamp(44px, 4.3vw, 76px);}
 .security-statement .small-note {margin-block: 32px;}
-.security-mechanisms > div {position: relative; padding-left: 24px; margin-bottom: 40px; border-left: 1px solid var(--rule);}
+.security-mechanisms > div {position: relative; margin-bottom: 40px;}
+.security-mechanism__rule {display: block; width: 40px; height: 1px; background: var(--line); transform-origin: left; margin-bottom: 20px;}
 .security-mechanisms dt {font-size: 20px; font-weight: 500; margin-bottom: 12px;}
 .security-mechanisms dd {margin: 0; color: var(--muted); font-size: 15px;}
-.install-chapter {padding-block: 100px; border-radius: 72px 72px 0 0;}
+.install-chapter {--chapter-background: var(--paper-soft); padding-block: 100px; border-radius: 72px 72px 0 0;}
 .install-heading {display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); align-items: end; margin-bottom: 56px;}
 .install-title {font-size: clamp(80px, 10vw, 154px);}
 .install-heading .lead {max-width: 460px; padding-bottom: 8px;}
@@ -204,7 +198,7 @@
 .install-note {margin-top: 20px !important;}
 .install-progression {display: grid; grid-template-columns: repeat(4, 1fr); list-style: none; padding: 0; gap: 24px; margin-block: 64px 48px !important;}
 .install-progression li {border-top: 1px solid var(--rule); padding-top: 16px; font-size: 15px; font-weight: 500;}
-.install-progression span {display: block; font-size: 12px; color: var(--brand); margin-bottom: 16px;}
+.install-progression span {display: block; font-size: 12px; color: var(--ink-muted); margin-bottom: 16px;}
 .install-actions {display: flex; gap: 32px; flex-wrap: wrap;}
 .landing-footer {display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 32px; padding-block: 48px 40px; font-size: 13px;}
 .footer-links {display: flex; gap: 24px;}
@@ -230,7 +224,6 @@
   .network-topology {max-width: 940px; width: 100%; margin-inline: auto;}
   .network-name {font-size: 10px;}
   .network-node {font-size: 18px;}
-  .architecture-schematic {padding: 40px; gap: 36px;}
   .security-composition {gap: 48px;}
 }
 @media (max-width: 900px) {
@@ -245,13 +238,6 @@
   .deployment-composition {grid-template-columns: 1fr; gap: 32px;}
   .deployment-flow {max-width: 700px;}
   .poster-lead {max-width: 680px;}
-  .provider-bus {grid-template-rows: repeat(4, 140px);}
-  .provider-node {width: 100%; padding-inline: 0;}
-  .provider-bus dt {font-size: 14px;}
-  .provider-bus dd {font-size: 11px;}
-  .architecture-core {left: 35%; width: 30%; padding-inline: 4px;}
-  .architecture-core h3 {font-size: 42px;}
-  .architecture-core p {font-size: 10px;}
   .security-composition {grid-template-columns: 1fr;}
   .security-mechanisms {display: grid; grid-template-columns: 1fr 1fr; gap: 32px;}
   .security-mechanisms > div {margin: 0;}
@@ -271,6 +257,7 @@
   .hero-aside {margin-top: 28px;}
   .hero-aside .action-row {gap: 20px;}
   .hero-proof {margin-bottom: -48px !important;}
+  .stage-structure__metadata {font-size: 8px; letter-spacing: .05em; padding-block: 12px;}
   .hero-proof .product-media__link {aspect-ratio: 1.28;}
   .hero-proof img {width: 150%; max-width: none; object-fit: cover; object-position: top left;}
   .product-media figcaption {font-size: 10px;}
@@ -282,7 +269,7 @@
   .flow-stage__marker {display: inline-block; width: 5px; height: 5px; background: var(--brand); margin-bottom: 8px;}
   .flow-stage__label {font-size: 14px;}
   .flow-stage__detail {font-size: 11px;}
-  .media-callout {position: relative; right: auto; top: auto; width: 100%; margin-block: 16px; padding: 16px; border-radius: 12px;}
+  .media-callout {position: relative; right: auto; top: auto; width: 100%; margin-block: 16px; padding: 16px; border-radius: 2px;}
   .media-callout::before, .media-callout::after {display: none;}
   .poster-proof {width: calc(100% - 32px); margin: 0 auto 36px !important;}
   .fact-rail {grid-template-columns: 1fr; gap: 28px; margin-bottom: 36px !important;}
@@ -320,18 +307,10 @@
   .network-footnote {padding-bottom: 64px;}
   .architecture-chapter {padding-block: 32px 64px;}
   .architecture-title {font-size: clamp(32px, 8.2vw, 48px);}
-  .architecture-schematic {padding: 28px 20px; margin-top: 36px; border-radius: 28px 28px 0 28px;}
-  .architecture-paths {display: none;}
-  .architecture-core {position: relative; top: auto; left: auto; width: 100%; text-align: left; padding: 0 0 32px;}
-  .architecture-core h3 {font-size: 52px;}
-  .architecture-core p {max-width: 100%;}
-  .provider-bus {grid-template-columns: 1fr 1fr; grid-template-rows: auto; gap: 16px 20px;}
-  .provider-node:nth-child(n) {grid-column: auto; width: 100%; padding-block: 12px; align-self: start;}
-  .architecture-extensions {margin-top: 24px !important;}
   .security-chapter {padding-bottom: 64px;}
   .security-title {font-size: clamp(32px, 8.2vw, 46px);}
   .security-mechanisms {grid-template-columns: 1fr;}
-  .security-mechanisms > div {padding-left: 30px;}
+  .security-boundary {padding: 32px 20px; border-radius: 24px 0 24px 0;}
   .install-chapter {padding-block: 64px; border-radius: 32px 32px 0 0;}
   .install-heading {grid-template-columns: 1fr; gap: 28px; margin-bottom: 32px;}
   .install-title {font-size: clamp(80px, 23vw, 110px);}

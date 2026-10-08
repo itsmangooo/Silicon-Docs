@@ -1,10 +1,10 @@
 // Brand choices are injected; presentation components use generic tokens.
 export const siliconTheme = {
-  '--site-bg': '#080b0a', '--surface': '#121816', '--foreground': '#f3f5f3',
-  '--muted': '#9ca8a1', '--brand': '#7de8b0', '--paper': '#e8ebe5',
-  '--ink': '#101411', '--ink-muted': '#435b4a', '--rule': '#2b3831',
-  '--chapter-graphite': '#111917', '--chapter-green': '#153b2b', '--network-bg': '#0b1812',
-  '--accent-strong': '#57d998', '--glass-bg': 'rgba(14, 21, 17, .76)',
+  '--site-bg': '#080909', '--surface': '#151616', '--foreground': '#f2f1ed',
+  '--muted': '#a5a5a0', '--brand': '#f1f0eb', '--paper': '#e9e8e2', '--paper-soft': '#d9d8d2',
+  '--ink': '#111212', '--ink-muted': '#4f504d', '--rule': '#303232', '--rule-strong': '#505252',
+  '--chapter-graphite': '#151616', '--network-bg': '#101111', '--nav-bg': '#111212',
+  '--accent-strong': '#ffffff', '--line': '#b5b6b2',
   '--font-display': 'Poppins, sans-serif', '--radius-control': '10px',
   '--radius-button': '12px', '--radius-media': '24px', '--radius-chapter': '64px',
   '--motion-duration': '0.8', '--motion-ease': '0.22,1,0.36,1',

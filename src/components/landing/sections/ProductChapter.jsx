@@ -6,8 +6,8 @@ import LineReveal from '../motion/LineReveal'
 import DeploymentFlow from '../graphics/DeploymentFlow'
 export default function ProductChapter({content}) {
   return <Chapter id={content.id} tone="graphite" className="poster-chapter">
-    <EditorialStage><LineReveal lines={content.title} id="product-title" className="poster-title" /><div className="deployment-composition"><DeploymentFlow /><p className="lead poster-lead">{content.description}</p></div></EditorialStage>
-    <MediaFrame image={content.image} variant="horizontal" className="poster-proof"><aside className="media-callout glass-layer"><span>Exact revision</span><p>The source stays attached to the deployment history.</p></aside></MediaFrame>
+    <EditorialStage><LineReveal variant="lateral" lines={content.title} id="product-title" className="poster-title" /><div className="deployment-composition"><DeploymentFlow /><p className="lead poster-lead">{content.description}</p></div></EditorialStage>
+    <MediaFrame image={content.image} className="poster-proof"><aside className="media-callout technical-label"><span>Exact revision</span><p>The source stays attached to the deployment history.</p></aside></MediaFrame>
     <EditorialStage><FactRail items={content.details} /><Button href={content.link.href}>{content.link.label}</Button></EditorialStage>
   </Chapter>
 }

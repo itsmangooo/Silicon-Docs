@@ -22,6 +22,7 @@ import InstallChapter from '../components/landing/sections/InstallChapter'
 import Footer from '../components/landing/sections/Footer'
 import '../css/landing/tokens.css'
 import '../css/landing/landing.css'
+import '../css/landing/architecture.css'
 import '../css/landing/motion.css'
 
 const chapters = {hero: HeroChapter, product: ProductChapter, servers: ServersChapter, aws: CloudChapter, network: NetworkChapter, architecture: ArchitectureChapter, security: SecurityChapter, install: InstallChapter}

@@ -12,7 +12,7 @@ export function EditorialStage({children, className = ''}) {
   return <div className={`editorial-stage ${className}`}>{children}</div>
 }
 export function CurvedStage({children, className = ''}) {
-  return <MacroReveal className={`curved-stage ${className}`}>{children}</MacroReveal>
+  return <div className={`curved-stage ${className}`}><MacroReveal className="curved-stage__surface" aria-hidden="true" />{children}</div>
 }
 export function FactRail({items}) {
   return <dl className="fact-rail">{items.map(([title, text]) => <div key={title}><dt>{title}</dt><dd>{text}</dd></div>)}</dl>

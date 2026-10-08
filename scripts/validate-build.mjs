@@ -67,6 +67,20 @@ for (const [, label] of chapterLabels) {
 }
 const diagrams = new Set([...home.matchAll(/\bdata-diagram="([^"]+)"/g)].map(match => match[1]))
 assert.ok(diagrams.size >= 3, 'Landing needs at least three distinct explanatory graphics')
+assert.ok(diagrams.has('provider-architecture'), 'Landing needs the implemented provider architecture graphic')
+const providerGraph = home.match(/<svg\b[^>]*class="[^"]*\bprovider-system__desktop\b[^"]*"[^>]*>([\s\S]*?)<\/svg>/i)
+assert.ok(providerGraph, 'Desktop provider architecture should be a coordinated SVG')
+assert.match(providerGraph[0], /\brole="img"/, 'Provider graphic needs semantic image treatment')
+assert.match(providerGraph[0], /\baria-labelledby="[^"]+"/, 'Provider graphic needs an accessible name and description')
+assert.match(providerGraph[1], /<title\b[^>]*>[^<]+<\/title>/)
+assert.match(providerGraph[1], /<desc\b[^>]*>[^<]+<\/desc>/)
+assert.equal([...providerGraph[1].matchAll(/\bclass="[^"]*\bprovider-system__node-shape\b[^"]*"/g)].length, silicon.architecture.providers.length, 'Every implemented provider needs one desktop node')
+const compactProviders = [...home.matchAll(/<div\b[^>]*class="[^"]*\bprovider-system__compact-node\b[^"]*"[^>]*>([\s\S]*?)<\/div>/g)]
+assert.equal(compactProviders.length, silicon.architecture.providers.length, 'Compact architecture should retain every implemented provider')
+for (const [, node] of compactProviders) {
+  assert.match(node, /<dt\b[^>]*>[^<]+<\/dt>/, 'Compact provider needs a semantic category')
+  assert.match(node, /<dd\b[^>]*>[^<]+<\/dd>/, 'Compact provider needs implementation detail')
+}
 assert.ok(home.includes(`${baseUrl}docs/`), 'Landing docs links must honor baseUrl')
 const productImages = [...home.matchAll(/<img\b[^>]*>/gi)].map(match => match[0])
   .filter(image => image.includes('/img/screenshots/'))
@@ -75,6 +89,7 @@ for (const [index, image] of productImages.entries()) {
   assert.match(image, /\bwidth="[1-9]\d*"/, 'Product image needs intrinsic width')
   assert.match(image, /\bheight="[1-9]\d*"/, 'Product image needs intrinsic height')
   assert.match(image, /\balt="[^"]+"/, 'Product image needs descriptive alternative text')
+  assert.doesNotMatch(image, /\bstyle="[^"]*(?:transform|perspective|clip-path|mask|filter|animation)\s*:/i, 'Product screenshot markup must remain static and keep its original colors')
   if (index === 0) assert.ok(!image.includes('loading="lazy"'), 'Hero should load without waiting for scrolling')
   else assert.ok(image.includes('loading="lazy"'), 'Below-the-fold product images must lazy load')
 }

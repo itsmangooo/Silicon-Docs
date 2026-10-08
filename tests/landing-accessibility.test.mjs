@@ -47,9 +47,10 @@ test('landing text and primary actions meet WCAG AA normal-text contrast', conte
   for (const [foreground, background] of [
     ['foreground', 'site-bg'], ['muted', 'site-bg'], ['muted', 'surface'],
     ['foreground', 'chapter-graphite'], ['muted', 'chapter-graphite'],
-    ['foreground', 'chapter-green'], ['muted', 'chapter-green'],
     ['foreground', 'network-bg'], ['muted', 'network-bg'],
-    ['ink', 'paper'], ['ink-muted', 'paper'], ['ink', 'brand'], ['ink-muted', 'brand'],
+    ['foreground', 'nav-bg'], ['muted', 'nav-bg'],
+    ['ink', 'paper'], ['ink-muted', 'paper'], ['ink', 'paper-soft'], ['ink-muted', 'paper-soft'],
+    ['ink', 'brand'], ['ink-muted', 'brand'],
   ]) {
     const ratio = contrast(color(foreground), color(background))
     context.diagnostic(`${foreground} on ${background}: ${ratio.toFixed(2)}:1`)
@@ -87,13 +88,10 @@ test('keyboard focus and the skip link remain visible across chapter surfaces', 
   assert.match(focus, /outline:\s*[12]px solid var\(--brand\)/)
   assert.match(focus, /outline-offset:\s*[1-9]\d*px/)
   assert.match(blockAfter(styles, '.landing-skip:focus'), /top:\s*\d+px/)
-  const focusedMedia = blockAfter(styles, '.media-reveal:focus-within')
-  assert.match(focusedMedia, /clip-path:\s*none\s*!important/)
-  assert.match(focusedMedia, /transform:\s*none\s*!important/)
   const focusedActions = blockAfter(styles, '.supporting-reveal:focus-within')
   assert.match(focusedActions, /opacity:\s*1\s*!important/)
   assert.match(focusedActions, /transform:\s*none\s*!important/)
-  for (const background of ['site-bg', 'surface', 'chapter-graphite', 'chapter-green', 'network-bg']) {
+  for (const background of ['site-bg', 'surface', 'chapter-graphite', 'network-bg', 'nav-bg']) {
     const ratio = contrast(color('brand'), color(background))
     context.diagnostic(`focus indicator on ${background}: ${ratio.toFixed(2)}:1`)
     assert.ok(ratio >= 3, `Focus indicator requires 3:1 against ${background}`)
@@ -101,7 +99,7 @@ test('keyboard focus and the skip link remain visible across chapter surfaces', 
   if (/\.chapter--paper\s*\{[^}]*background:\s*var\(--paper\)/.test(styles)) {
     assert.match(styles, /\.chapter--paper[^{}]*:focus-visible[^{}]*\{[^}]*outline-color:\s*var\(--ink\)/)
   }
-  for (const background of ['paper', 'brand']) {
+  for (const background of ['paper', 'paper-soft', 'brand']) {
     const ratio = contrast(color('ink'), color(background))
     context.diagnostic(`focus indicator on ${background}: ${ratio.toFixed(2)}:1`)
     assert.ok(ratio >= 3, `Focus indicator requires 3:1 against ${background}`)
@@ -115,18 +113,36 @@ test('keyboard focus and the skip link remain visible across chapter surfaces', 
   assert.ok(contrast(color('brand'), color('site-bg')) >= 3)
 })
 
-test('glass treatment stays selective and chapters do not use the accent as a page surface', () => {
-  const rules = [...styles.matchAll(/([^{}]+)\{([^{}]*)\}/g)]
-  const glass = rules.filter(([, , declarations]) => /backdrop-filter:\s*(?!none\b)[^;}]+/.test(declarations))
-  assert.ok(glass.length > 0, 'The floating navigation should have its selective glass treatment')
-  assert.ok(glass.length <= 4, 'Keep glass limited to navigation and a few meaningful callouts')
-  for (const [, selectors] of glass) {
-    assert.doesNotMatch(selectors, /(?:^|,)\s*(?:html|body|\.landing-root(?:\s+\*)?|\.chapter(?:--[\w-]+)?)\s*(?:,|$)/, 'Do not blur the page or full chapter surfaces')
+test('landing colors remain neutral and solid surfaces have no glass treatment', () => {
+  assert.doesNotMatch(styles, /\b(?:-webkit-)?backdrop-filter\b/i, 'Do not use blurred or frosted surfaces')
+  assert.equal(Object.hasOwn(siliconTheme, '--glass-bg'), false)
+  assert.equal(Object.hasOwn(siliconTheme, '--chapter-green'), false)
+  const colors = Object.values(siliconTheme).filter(value => /^#[a-f\d]{6}$/i.test(value))
+  for (const hex of colors) {
+    const channels = [1, 3, 5].map(offset => parseInt(hex.slice(offset, offset + 2), 16))
+    assert.ok(Math.max(...channels) - Math.min(...channels) <= 12, `${hex}: keep the landing palette near neutral; screenshots retain their own product colors`)
   }
-  for (const [, selectors, declarations] of rules) {
-    if (/(?:^|,)\s*(?:\.landing-root\s+)?\.(?:chapter(?:--[\w-]+)?|poster-panel|cloud-chapter|install-chapter|network-chapter)\s*(?:,|$)/.test(selectors)) {
-      assert.doesNotMatch(declarations, /background(?:-color)?:\s*var\(--brand\)/, 'Mint is an accent, not a large chapter background')
-    }
+  const nav = blockAfter(styles, '.floating-nav {')
+  assert.match(nav, /background:\s*var\(--nav-bg\)/, 'Floating navigation should use its solid neutral surface')
+})
+
+test('product screenshots and their enclosing stages stay completely static', () => {
+  const media = read('src/components/landing/core/MediaFrame.jsx')
+  const hero = read('src/components/landing/compositions/HeroMediaStage.jsx')
+  assert.doesNotMatch(media, /MediaReveal|useEntrance|useScroll|useTransform|<(?:m|motion)\./)
+  assert.match(media, /return\s*<figure\b/)
+  assert.match(media, /<img\b/)
+  assert.match(hero, /return\s*<div\b/, 'The hero screenshot stage must be an ordinary element')
+  assert.doesNotMatch(hero, /useScroll|useTransform|style=\{|return\s*<(?:m|motion)\./, 'Animate separate structural elements, not the screenshot container')
+  const compositions = read('src/components/landing/compositions/Chapter.jsx')
+  const frame = compositions.slice(compositions.indexOf('export function CurvedStage'), compositions.indexOf('export function FactRail'))
+  assert.match(frame, /return\s*<div\b/)
+  assert.doesNotMatch(frame, /<MacroReveal\b[^>]*(?<!\/)>(?:\s*)\{children\}/, 'Frame motion must be separate from screenshot children')
+
+  for (const [, selectors, declarations] of styles.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+    const screenshotRule = selectors.split(',').some(selector => /(?:^|\s)\.(?:product-media(?:--[\w-]+)?(?:__link)?(?:\s+img)?|hero-media-stage|hero-proof|poster-proof|servers-proof|cloud-proof|curved-stage|servers-frame|hero-chapter|poster-chapter|servers-chapter|cloud-chapter)(?::[\w-]+)?$/.test(selector.trim()))
+    if (!screenshotRule) continue
+    assert.doesNotMatch(declarations, /(?:^|;)\s*(?:transform|perspective|clip-path|mask(?:-image)?|filter|animation(?:-name)?)\s*:/, `${selectors.trim()}: screenshot pixels and containers must not reveal, move, mask, or recolor`)
   }
 })
 
@@ -135,12 +151,12 @@ test('landing has no permanent animation loop or prohibited scrolling/rendering 
   for (const file of files) {
     const source = read(file)
     assert.doesNotMatch(source, /\brequestAnimationFrame\s*\(|\brepeat\s*:\s*Infinity\b|\banimation[^;{}]*\binfinite\b/, `${file}: native scrolling and finite motion must remain authoritative`)
-    assert.doesNotMatch(source, /(?:from\s*|import\s*\(|require\s*\()\s*['"](?:gsap|lenis|@studio-freight\/lenis|three|@react-three\/fiber|playcanvas|lottie-web)(?:\/[^'"]*)?['"]/, `${file}: prohibited motion/rendering dependency`)
+    assert.doesNotMatch(source, /(?:from\s*|import\s*\(|require\s*\()\s*['"](?:lenis|@studio-freight\/lenis|three|@react-three\/fiber|playcanvas|lottie-web)(?:\/[^'"]*)?['"]/, `${file}: prohibited motion/rendering dependency`)
   }
   const manifest = JSON.parse(read('package.json'))
   const dependencyNames = Object.keys({...manifest.dependencies, ...manifest.devDependencies})
   for (const name of dependencyNames) {
-    assert.doesNotMatch(name, /^(?:gsap|lenis|@studio-freight\/lenis|three|@react-three\/fiber|playcanvas|lottie-web)$/, `Prohibited landing dependency: ${name}`)
+    assert.doesNotMatch(name, /^(?:lenis|@studio-freight\/lenis|three|@react-three\/fiber|playcanvas|lottie-web)$/, `Prohibited landing dependency: ${name}`)
   }
 })
 
