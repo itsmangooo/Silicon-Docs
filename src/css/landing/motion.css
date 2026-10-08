@@ -1,16 +1,23 @@
-.silicon-landing .landing-cta,.silicon-landing .landing-menu-toggle,.silicon-landing .command-label button {
-  transition: color var(--motion-fast), background-color var(--motion-fast), border-color var(--motion-fast), transform var(--motion-fast) var(--motion-ease);
-}
-.silicon-landing .landing-nav-links a {transition: color var(--motion-fast)}
-.silicon-landing .landing-reveal:focus-within {opacity: 1 !important; transform: none !important}
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .silicon-landing .landing-cta:hover {transform: translateY(-1px)}
-  .silicon-landing .landing-cta:active {transform: translateY(0)}
-}
+.line-reveal__mask {display: block; overflow: hidden; padding-bottom: .12em; margin-bottom: -.12em;}
+.line-reveal__line {display: block;}
+.media-reveal {border-radius: var(--radius-media);}
+.media-reveal:focus-within {clip-path: none !important; transform: none !important;}
+.macro-reveal:focus-within {transform: none !important;}
+.supporting-reveal:focus-within {opacity: 1 !important; transform: none !important;}
+.landing-motion-layer[data-motion='reduced'] .line-reveal__line {transform: none !important;}
+.landing-motion-layer[data-motion='reduced'] .media-reveal {clip-path: none !important; transform: none !important;}
+.landing-motion-layer[data-motion='reduced'] .macro-reveal {transform: none !important;}
+.landing-motion-layer[data-motion='reduced'] .network-story {min-height: auto !important;}
+.landing-motion-layer[data-motion='reduced'] .network-sticky {position: static !important; min-height: auto !important; max-height: none !important;}
+.landing-motion-layer[data-motion='reduced'] .stage-detail {position: static !important; width: auto !important; height: auto !important; overflow: visible !important; clip-path: none !important;}
+.landing-motion-layer[data-motion='reduced'] .network-node {opacity: 1 !important;}
+.landing-motion-layer[data-motion='reduced'] .network-node, .landing-motion-layer[data-motion='reduced'] .supporting-reveal, .landing-motion-layer[data-motion='reduced'] .assembly-item, .landing-motion-layer[data-motion='reduced'] .flow-stage {transform: none !important; opacity: 1 !important;}
 @media (prefers-reduced-motion: reduce) {
-  .silicon-landing *, .silicon-landing *::before, .silicon-landing *::after {
-    animation: none !important; transition: none !important; scroll-behavior: auto !important;
-  }
-  .silicon-landing .landing-reveal {opacity: 1 !important; transform: none !important}
-  .silicon-landing .diagram-path {stroke-dasharray: none !important; stroke-dashoffset: 0 !important}
+  .landing-root *, .landing-root *::before, .landing-root *::after {animation: none !important; transition-duration: 0s !important; scroll-behavior: auto !important;}
+  .landing-root .line-reveal__line, .landing-root .media-reveal, .landing-root .macro-reveal {transform: none !important; clip-path: none !important; opacity: 1 !important;}
+  .landing-root .network-story {min-height: auto !important;}
+  .landing-root .network-sticky {position: static !important; min-height: auto !important; max-height: none !important;}
+  .landing-root .stage-detail {position: static !important; width: auto !important; height: auto !important; overflow: visible !important; clip-path: none !important;}
+  .landing-root .network-node {opacity: 1 !important;}
+  .landing-root .supporting-reveal, .landing-root .assembly-item, .landing-root .flow-stage, .landing-root .network-node {transform: none !important; opacity: 1 !important;}
 }

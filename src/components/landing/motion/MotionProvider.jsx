@@ -1,33 +1,84 @@
-import React, {createContext, useContext, useEffect, useRef, useState} from 'react'
+import React, {createContext, useCallback, useContext, useEffect, useRef, useState} from 'react'
 import {LazyMotion, domAnimation, MotionConfig, useReducedMotion} from 'motion/react'
+import {DEFAULT_DURATION, DEFAULT_EASE, DEFAULT_STAGGER, readDuration, readEase} from './settings.mjs'
 
-const MotionSettings = createContext({ready: false, reduced: true, mobile: true, duration: 0, travel: 0, stagger: 0, ease: [0.22, 1, 0.36, 1]})
+const MotionSettings = createContext({
+  ready: false,
+  reduced: true,
+  systemReduced: false,
+  manualReduced: false,
+  setManualReduced: () => {},
+  desktopStory: false,
+  duration: DEFAULT_DURATION,
+  ease: DEFAULT_EASE,
+  stagger: DEFAULT_STAGGER,
+  mediaRadius: 24,
+  chapterRadius: 72,
+})
+
 export const useLandingMotion = () => useContext(MotionSettings)
 
-export default function MotionProvider({children}) {
+export default function MotionProvider({children, storageKey = 'landing-motion'}) {
+  const preferenceKey = storageKey
   const root = useRef(null)
-  const reduced = useReducedMotion()
-  const [settings, setSettings] = useState(null)
+  const osReduced = useReducedMotion()
+  const [systemReduced, setSystemReduced] = useState(null)
+  const [manualReduced, setManualPreference] = useState(false)
+  const [settings, setSettings] = useState({ready: false, desktopStory: false, duration: DEFAULT_DURATION, ease: DEFAULT_EASE, stagger: DEFAULT_STAGGER, mediaRadius: 24, chapterRadius: 72})
+
+  const setManualReduced = useCallback(value => {
+    const reduced = Boolean(value)
+    setManualPreference(reduced)
+    try {window.localStorage.setItem(preferenceKey, reduced ? 'reduced' : 'full')} catch {}
+  }, [preferenceKey])
+
   useEffect(() => {
-    const media = window.matchMedia('(max-width: 767px)')
+    try {setManualPreference(window.localStorage.getItem(preferenceKey) === 'reduced')} catch {}
+    const initialCss = window.getComputedStyle(root.current)
+    const minWidth = parseFloat(initialCss.getPropertyValue('--story-min-width'))
+    const minHeight = parseFloat(initialCss.getPropertyValue('--story-min-height'))
+    const width = Number.isFinite(minWidth) && minWidth > 0 ? minWidth : 1100
+    const height = Number.isFinite(minHeight) && minHeight > 0 ? minHeight : 700
+    const viewport = window.matchMedia(`(min-width: ${width}px) and (min-height: ${height}px)`)
+    const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const readMotionPreference = () => setSystemReduced(motionPreference.matches)
     const read = () => {
-      const css = getComputedStyle(root.current)
+      const css = window.getComputedStyle(root.current)
+      const mediaRadius = parseFloat(css.getPropertyValue('--radius-media'))
+      const chapterRadius = parseFloat(css.getPropertyValue('--radius-chapter'))
       setSettings({
-        ready: true, mobile: media.matches,
-        duration: parseFloat(css.getPropertyValue('--motion-base')) / 1000,
-        travel: parseFloat(css.getPropertyValue(media.matches ? '--motion-travel-mobile' : '--motion-travel')),
-        stagger: parseFloat(css.getPropertyValue('--motion-stagger')) / 1000,
-        mediaScale: parseFloat(css.getPropertyValue('--motion-media-scale')),
-        ease: css.getPropertyValue('--motion-ease-values').split(',').map(Number),
+        ready: true,
+        desktopStory: viewport.matches,
+        duration: readDuration(css.getPropertyValue('--motion-duration')),
+        ease: readEase(css.getPropertyValue('--motion-ease')),
+        stagger: readDuration(css.getPropertyValue('--motion-stagger'), DEFAULT_STAGGER),
+        mediaRadius: Number.isFinite(mediaRadius) && mediaRadius >= 0 ? mediaRadius : 24,
+        chapterRadius: Number.isFinite(chapterRadius) && chapterRadius >= 0 ? chapterRadius : 72,
       })
     }
-    read(); media.addEventListener('change', read)
-    return () => media.removeEventListener('change', read)
-  }, [])
-  const value = {...useContext(MotionSettings), ...settings, reduced: Boolean(reduced)}
-  return <div ref={root} className="landing-motion-root">
+    const onPreferenceChange = event => {
+      if (event.key === preferenceKey) setManualPreference(event.newValue === 'reduced')
+    }
+    read()
+    readMotionPreference()
+    viewport.addEventListener('change', read)
+    motionPreference.addEventListener('change', readMotionPreference)
+    window.addEventListener('resize', read)
+    window.addEventListener('storage', onPreferenceChange)
+    return () => {
+      viewport.removeEventListener('change', read)
+      motionPreference.removeEventListener('change', readMotionPreference)
+      window.removeEventListener('resize', read)
+      window.removeEventListener('storage', onPreferenceChange)
+    }
+  }, [preferenceKey])
+
+  const actualSystemReduced = Boolean(systemReduced ?? osReduced)
+  const reduced = !settings.ready || actualSystemReduced || manualReduced
+  const value = {...settings, reduced, systemReduced: actualSystemReduced, manualReduced, setManualReduced}
+  return <div ref={root} className="landing-motion-layer" data-motion={!settings.ready ? 'pending' : reduced ? 'reduced' : 'full'}>
     <MotionSettings.Provider value={value}>
-      <MotionConfig reducedMotion="user" transition={{duration: value.duration, ease: value.ease}}>
+      <MotionConfig reducedMotion={reduced ? 'always' : 'user'} transition={{duration: value.duration, ease: value.ease}}>
         <LazyMotion features={domAnimation} strict>{children}</LazyMotion>
       </MotionConfig>
     </MotionSettings.Provider>

@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import {existsSync, readdirSync, readFileSync, statSync} from 'node:fs'
 import {join, resolve, sep} from 'node:path'
+import {silicon} from '../src/landing/silicon/content.mjs'
 
 const build = resolve(process.env.DOCS_BUILD_DIR || 'build')
 const baseUrl = process.env.DOCS_BASE_URL || '/Silicon-Docs/'
@@ -53,11 +54,32 @@ for (const page of pages) {
   }
 }
 const home = readFileSync(join(build, 'index.html'), 'utf8')
-assert.ok(home.includes('Your infrastructure.'), 'Landing missing from public root')
+const h1 = home.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i)?.[1].replace(/<[^>]*>/g, ' ').trim()
+assert.ok(h1?.length > 15, 'Public landing needs a substantive semantic page heading')
+assert.equal([...home.matchAll(/<h1\b/gi)].length, 1, 'Public landing needs one primary heading')
+for (const id of silicon.chapterOrder) {
+  assert.ok(home.includes(`id="${id}"`), `Landing chapter ${id} is missing`)
+}
+const chapterLabels = [...home.matchAll(/<p\b[^>]*class="[^"]*\bchapter-label\b[^"]*"[^>]*>([\s\S]*?)<\/p>/gi)]
+assert.ok(chapterLabels.length > 0, 'Landing needs descriptive chapter labels')
+for (const [, label] of chapterLabels) {
+  assert.doesNotMatch(label.replace(/<[^>]*>/g, ' ').trim(), /^\d+\b/, 'Chapter labels should contain names without section counters')
+}
+const diagrams = new Set([...home.matchAll(/\bdata-diagram="([^"]+)"/g)].map(match => match[1]))
+assert.ok(diagrams.size >= 3, 'Landing needs at least three distinct explanatory graphics')
 assert.ok(home.includes(`${baseUrl}docs/`), 'Landing docs links must honor baseUrl')
-assert.ok(home.includes('width="1440" height="1180"'), 'Hero needs intrinsic dimensions')
-assert.ok(home.includes('loading="lazy"'), 'Chapter images must lazy load')
-assert.ok(home.includes('sanitized demo data'), 'Product fixtures need a visible label')
+const productImages = [...home.matchAll(/<img\b[^>]*>/gi)].map(match => match[0])
+  .filter(image => image.includes('/img/screenshots/'))
+assert.ok(productImages.length > 0, 'Landing needs product screenshots')
+for (const [index, image] of productImages.entries()) {
+  assert.match(image, /\bwidth="[1-9]\d*"/, 'Product image needs intrinsic width')
+  assert.match(image, /\bheight="[1-9]\d*"/, 'Product image needs intrinsic height')
+  assert.match(image, /\balt="[^"]+"/, 'Product image needs descriptive alternative text')
+  if (index === 0) assert.ok(!image.includes('loading="lazy"'), 'Hero should load without waiting for scrolling')
+  else assert.ok(image.includes('loading="lazy"'), 'Below-the-fold product images must lazy load')
+}
+const visibleText = home.replace(/<[^>]*>/g, ' ')
+assert.match(visibleText, /sanitized|demonstration fixtures/i, 'Product fixtures need a visible disclosure')
 assert.ok(home.includes('property="og:title" content="Silicon'), 'Landing needs social title metadata')
 assert.ok(redirects > 40, 'Expected all existing documentation redirects')
 assert.deepEqual(failures, [], `${failures.length} generated link/redirect failures`)

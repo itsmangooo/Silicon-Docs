@@ -2,41 +2,32 @@ import React from 'react'
 import Head from '@docusaurus/Head'
 import {PageMetadata} from '@docusaurus/theme-common'
 import LayoutProvider from '@theme/Layout/Provider'
-import '@fontsource-variable/inter'
-import {silicon} from '../components/landing/content/silicon'
-import LandingNav from '../components/landing/core/LandingNav'
+import '@fontsource/poppins/400.css'
+import '@fontsource/poppins/500.css'
+import '@fontsource/poppins/600.css'
+import {silicon} from '../landing/silicon/content.mjs'
+import {siliconTheme} from '../landing/silicon/theme.mjs'
+import {networkTopology} from '../landing/silicon/diagrams.mjs'
+import LandingShell from '../components/landing/core/LandingShell'
+import FloatingNav from '../components/landing/core/FloatingNav'
 import MotionProvider from '../components/landing/motion/MotionProvider'
-import HeroSection from '../components/landing/sections/HeroSection'
-import ProductSection from '../components/landing/sections/ProductSection'
-import {NetworkSection, ArchitectureSection} from '../components/landing/sections/DiagramSection'
-import SecuritySection from '../components/landing/sections/SecuritySection'
-import InstallSection from '../components/landing/sections/InstallSection'
-import FinalCTA, {LandingFooter} from '../components/landing/sections/FinalCTA'
+import HeroChapter from '../components/landing/sections/HeroChapter'
+import ProductChapter from '../components/landing/sections/ProductChapter'
+import ServersChapter from '../components/landing/sections/ServersChapter'
+import CloudChapter from '../components/landing/sections/CloudChapter'
+import NetworkChapter from '../components/landing/sections/NetworkChapter'
+import ArchitectureChapter from '../components/landing/sections/ArchitectureChapter'
+import SecurityChapter from '../components/landing/sections/SecurityChapter'
+import InstallChapter from '../components/landing/sections/InstallChapter'
+import Footer from '../components/landing/sections/Footer'
 import '../css/landing/tokens.css'
 import '../css/landing/landing.css'
 import '../css/landing/motion.css'
 
+const chapters = {hero: HeroChapter, product: ProductChapter, servers: ServersChapter, aws: CloudChapter, network: NetworkChapter, architecture: ArchitectureChapter, security: SecurityChapter, install: InstallChapter}
 export default function Home() {
   const title = 'Silicon — Hybrid hosting for your own servers and the cloud'
-  return <LayoutProvider>
-    <PageMetadata description={silicon.description} />
-    <Head><title>{title}</title><meta property="og:title" content={title} /><meta name="twitter:title" content={title} /></Head>
-    <div className="silicon-landing">
-      <a className="landing-skip" href="#landing-main">Skip to content</a>
-      <MotionProvider>
-        <LandingNav brand={silicon} links={silicon.navigation} />
-        <main id="landing-main" tabIndex="-1">
-          <HeroSection product={silicon} />
-          {silicon.chapters.map(chapter => <ProductSection key={chapter.id} chapter={chapter} />)}
-          <ProductSection chapter={silicon.aws} wide />
-          <NetworkSection content={silicon.network} />
-          <ArchitectureSection content={silicon.architecture} />
-          <SecuritySection content={silicon.security} />
-          <InstallSection content={silicon.install} />
-          <FinalCTA product={silicon} />
-        </main>
-        <LandingFooter product={silicon} />
-      </MotionProvider>
-    </div>
+  return <LayoutProvider><PageMetadata description={silicon.description} /><Head><title>{title}</title><meta property="og:title" content={title} /><meta name="twitter:title" content={title} /></Head>
+    <LandingShell theme={siliconTheme}><a className="landing-skip" href="#landing-main">Skip to content</a><MotionProvider storageKey="silicon-landing-motion"><FloatingNav brand={silicon} /><main id="landing-main" tabIndex="-1">{silicon.chapterOrder.map(key => {const Component = chapters[key]; return <Component key={key} content={silicon[key]} topology={networkTopology} repository={silicon.repository} />})}</main><Footer brand={silicon} /></MotionProvider></LandingShell>
   </LayoutProvider>
 }

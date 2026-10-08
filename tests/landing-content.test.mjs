@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import {readFileSync, existsSync} from 'node:fs'
 import test from 'node:test'
-import {silicon} from '../src/components/landing/content/silicon.js'
+import {silicon} from '../src/landing/silicon/content.mjs'
 
 const projectRoot = new URL('../', import.meta.url)
 const readProjectFile = path => readFileSync(new URL(path, projectRoot), 'utf8')
@@ -31,23 +31,26 @@ test('product screenshots exist with their real PNG dimensions and useful alt te
   }
 })
 
-test('the editorial story covers nine substantial chapters', () => {
-  // Eight content chapters plus the final CTA: hero, applications, servers,
-  // AWS, networking, architecture, security, installation, and the closing.
-  // This checks the content plan rather than snapshotting rendered markup.
-  const contentChapters = [
-    silicon.hero,
-    ...silicon.chapters,
-    silicon.aws,
-    silicon.network,
-    silicon.architecture,
-    silicon.security,
-    silicon.install,
-  ]
-  assert.equal(contentChapters.length + 1, 9)
-  for (const chapter of contentChapters) assert.ok(chapter.title, 'Each chapter needs a heading')
-  assert.match(readProjectFile('src/pages/index.jsx'), /<FinalCTA\b/, 'The story must end with its CTA')
-  assert.equal(new Set(silicon.chapters.map(chapter => chapter.id)).size, silicon.chapters.length)
+test('the eight editorial chapters have unique anchors and substantive content', () => {
+  // A content contract, independent of the components or composition used to
+  // present each chapter. Installation also supplies the closing actions.
+  assert.equal(silicon.chapterOrder.length, 8)
+  assert.equal(new Set(silicon.chapterOrder).size, silicon.chapterOrder.length)
+  for (const id of silicon.chapterOrder) {
+    const chapter = silicon[id]
+    assert.equal(chapter.id, id, `Chapter ${id} must have a stable navigation anchor`)
+    assert.ok(chapter.title.join(' ').trim().length >= 12, `${id}: provide a substantive heading`)
+    assert.equal(Object.hasOwn(chapter, 'number'), false, `${id}: editorial labels must not carry section counters`)
+  }
+  const navigationAnchors = silicon.navigation.filter(link => link.href.startsWith('#'))
+  for (const {href} of navigationAnchors) {
+    assert.ok(silicon.chapterOrder.includes(href.slice(1)), `Navigation anchor ${href} has no chapter`)
+  }
+})
+
+test('chapter labels contain names without numbered markup', () => {
+  const label = readProjectFile('src/components/landing/core/ChapterLabel.jsx')
+  assert.doesNotMatch(label, /\bnumber\b/, 'Remove the old chapter-number prop and markup')
 })
 
 test('the product reference names an exact semantic release and commit', () => {

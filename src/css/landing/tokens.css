@@ -1,43 +1,27 @@
-.silicon-landing {
-  --landing-bg: #121616;
-  --landing-surface: #191e1e;
-  --landing-surface-quiet: #151a1a;
-  --landing-text: #f0f1eb;
-  --landing-muted: #a2adaa;
-  --landing-faint: #7e8986;
-  --landing-accent: #a0e6c1;
-  --landing-accent-hover: #b6f0d0;
-  --landing-border: #303a37;
-  --landing-border-strong: #52635c;
-  --landing-accent-ink: #12251c;
-  --landing-font: 'Inter Variable', Inter, system-ui, sans-serif;
-  --landing-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
-  --landing-rail: min(70vw, 1280px);
-  --landing-radius: 3px;
-  --landing-space-1: 4px;
-  --landing-space-2: 8px;
-  --landing-space-3: 12px;
-  --landing-space-4: 16px;
-  --landing-space-5: 24px;
-  --landing-space-6: 32px;
-  --landing-space-7: 48px;
-  --landing-space-8: 64px;
-  --landing-space-9: 96px;
-  --landing-space-10: 128px;
-  --motion-ease: cubic-bezier(.22, 1, .36, 1);
-  --motion-ease-values: .22, 1, .36, 1;
-  --motion-fast: 160ms;
-  --motion-base: 500ms;
-  --motion-slow: 700ms;
-  --motion-stagger: 70ms;
-  --motion-travel: 18px;
-  --motion-travel-mobile: 8px;
-  --motion-media-scale: .985;
+/* Layout and rhythm are generic; Silicon's palette/type is injected by its theme. */
+.landing-root {
+  --stage-width: min(92vw, 1600px);
+  --editorial-width: min(84vw, 1420px);
+  --content-width: min(74vw, 1240px);
+  --reading-width: 720px;
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 48px;
+  --space-6: 64px;
+  --space-7: 96px;
+  --space-8: 128px;
+  --font-body: clamp(16px, 1.1vw, 18px);
+  --font-lead: clamp(18px, 1.65vw, 26px);
+  --font-chapter: clamp(52px, 6.4vw, 110px);
+  --font-hero: clamp(64px, 8.5vw, 150px);
+  --motion-duration: .8;
+  --motion-ease: .22,1,.36,1;
 }
-
-@media (max-width: 1200px) {
-  .silicon-landing {--landing-rail: calc(100% - 64px)}
+@media (max-width: 1024px) {
+  .landing-root {--stage-width: calc(100% - 48px); --editorial-width: calc(100% - 72px); --content-width: calc(100% - 96px); --radius-chapter: 40px; --space-7: 72px; --space-8: 96px;}
 }
-@media (max-width: 767px) {
-  .silicon-landing {--landing-rail: calc(100% - 32px)}
+@media (max-width: 600px) {
+  .landing-root {--stage-width: calc(100% - 32px); --editorial-width: calc(100% - 40px); --content-width: calc(100% - 40px); --font-hero: clamp(42px, 10.5vw, 64px); --font-chapter: clamp(38px, 10vw, 58px); --radius-chapter: 32px; --radius-media: 16px; --space-6: 48px; --space-7: 64px; --space-8: 80px;}
 }
