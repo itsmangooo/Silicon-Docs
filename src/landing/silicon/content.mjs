@@ -1,6 +1,6 @@
 // Public claims and copied UI assets verified against this exact product release.
 const repository = 'https://github.com/itsmangooo/Silicon'
-const image = (name, height, alt) => ({src: `/img/screenshots/${name}.png`, width: 1440, height, alt: `${alt}; sanitized demo data`, caption: 'Actual Silicon UI · sanitized demo data'})
+const image = (name, height, alt) => ({src: `/img/screenshots/${name}.png`, width: 1440, height, alt: `${alt}; sanitized demo data`})
 export const silicon = {
   name: 'Silicon', logo: '/img/silicon-mark-flat.svg', repository,
   release: 'v0.1.7', releaseCommit: '2ea960547db6e0d95a3d23ffab51b35010fd1f2f',
@@ -8,7 +8,7 @@ export const silicon = {
   navigation: [{label: 'Product', href: '#product'}, {label: 'Documentation', href: '/docs/'}, {label: 'GitHub', href: repository}],
   chapterOrder: ['hero', 'product', 'servers', 'aws', 'network', 'architecture', 'security', 'install'],
   hero: {
-    id: 'hero', label: 'Self-hosted infrastructure', title: ['Your', 'infrastructure.', 'One place.'],
+    id: 'hero', title: ['Your', 'infrastructure.', 'One place.'],
     description: 'Your homelab. Your Linux servers. Your AWS resources. Bring them together in one self-hosted workspace.',
     image: image('dashboard', 1180, 'Silicon dashboard with applications, deployment history, and registered servers'),
   },
@@ -27,7 +27,7 @@ export const silicon = {
     link: {label: 'Connect your Linux server', href: '/docs/guides/self-hosted'},
   },
   aws: {
-    id: 'aws', label: 'AWS / EC2', title: ['Your homelab', 'doesn’t end', 'at the cloud.'],
+    id: 'aws', title: ['Your homelab', 'doesn’t end', 'at the cloud.'],
     description: 'Connect with AssumeRole. Discover, create, import, and manage EC2 machines alongside your own servers.',
     image: image('guide-aws-compute', 1200, 'AWS Compute inventory with EC2 instance ownership, lifecycle actions, and recent infrastructure operations'),
     details: [['Compute & infrastructure', 'EC2 lifecycle, VPCs, subnets, security groups, Elastic IPs, EBS, and snapshots.'], ['Costs with context', 'Delayed Cost Explorer data, on-demand estimates, and budgets that can block new provisioning.'], ['Deploy on the instance', 'Use SSH for Git builds, secrets, tunnels, and private networks. SSM provides bounded checks and lifecycle operations.']],
@@ -35,7 +35,7 @@ export const silicon = {
     link: {label: 'Start with the AWS hosting guide', href: '/docs/guides/aws'},
   },
   network: {
-    id: 'network', label: 'Private networking', title: ['Different machines.', 'A private connection.'],
+    id: 'network', title: ['Different machines.', 'A private connection.'],
     description: 'Attach selected applications to an organization-owned WireGuard network. Discover them through .internal names. Keep project boundaries explicit.',
     stages: [
       {label: 'Local', title: 'Start close to home.', text: 'Add a local Linux host to a Silicon Network. WireGuard private keys are generated on the host and stay there.'},
@@ -48,7 +48,7 @@ export const silicon = {
     link: {label: 'Understand private networking', href: '/docs/guides/private-networking'},
   },
   architecture: {
-    id: 'architecture', label: 'Go + PostgreSQL', title: ['One application.', 'Replaceable providers.'],
+    id: 'architecture', title: ['One application.', 'Replaceable providers.'],
     description: 'A Go modular monolith, not a collection of microservices. Core modules use explicit interfaces; adapters handle infrastructure-specific operations.',
     foundation: 'Go · PostgreSQL · persistent jobs · versioned REST API',
     providers: [['Runtime', 'Docker'], ['Server connections', 'Local · SSH · AWS SSM'], ['Git source', 'GitHub App'], ['DNS & tunnels', 'Cloudflare'], ['Cloud resources', 'AWS SDK'], ['Private networking', 'WireGuard · CoreDNS · nftables'], ['Secrets', 'Local AES-256-GCM'], ['System email', 'SMTP · Resend · Postmark · Mailgun · SES']],

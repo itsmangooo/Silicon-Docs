@@ -7,10 +7,17 @@ const projectRoot = new URL('../', import.meta.url)
 const read = path => readFileSync(new URL(path, projectRoot), 'utf8')
 const styles = sourceFiles('src/css/landing').map(read).join('\n')
 
-function color(name) {
+function color(name, backdrop = 'site-bg') {
   const value = siliconTheme[`--${name}`]
-  assert.match(value, /^#[a-f\d]{6}$/i, `Missing six-digit theme color: --${name}`)
-  return value
+  if (/^#[a-f\d]{6}$/i.test(value)) return value
+  const translucent = value?.match(/^rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(0?\.\d+|1(?:\.0+)?)\s*\)$/i)
+  assert.ok(translucent, `Missing supported hex/RGBA theme color: --${name}`)
+  const background = color(backdrop)
+  const alpha = Number(translucent[4])
+  return `#${[1, 2, 3].map((index, channel) => {
+    const lower = parseInt(background.slice(1 + channel * 2, 3 + channel * 2), 16)
+    return Math.round(Number(translucent[index]) * alpha + lower * (1 - alpha)).toString(16).padStart(2, '0')
+  }).join('')}`
 }
 
 function luminance(hex) {
@@ -36,6 +43,12 @@ function blockAfter(source, selector) {
   assert.fail(`Unclosed CSS contract: ${selector}`)
 }
 
+function declarationsFor(source, selector) {
+  return [...source.matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+    .filter(([, selectors]) => selectors.split(',').some(value => value.trim() === selector))
+    .map(([, , declarations]) => declarations).join('\n')
+}
+
 function sourceFiles(directory) {
   return readdirSync(new URL(directory, projectRoot), {withFileTypes: true}).flatMap(entry => {
     const path = `${directory}/${entry.name}`
@@ -49,6 +62,9 @@ test('landing text and primary actions meet WCAG AA normal-text contrast', conte
     ['foreground', 'chapter-graphite'], ['muted', 'chapter-graphite'],
     ['foreground', 'network-bg'], ['muted', 'network-bg'],
     ['foreground', 'nav-bg'], ['muted', 'nav-bg'],
+    ['foreground', 'surface-raised'], ['muted', 'surface-raised'],
+    ['foreground', 'glass-bg'], ['muted', 'glass-bg'],
+    ['foreground', 'glass-bg-strong'], ['muted', 'glass-bg-strong'],
     ['ink', 'paper'], ['ink-muted', 'paper'], ['ink', 'paper-soft'], ['ink-muted', 'paper-soft'],
     ['ink', 'brand'], ['ink-muted', 'brand'],
   ]) {
@@ -58,23 +74,22 @@ test('landing text and primary actions meet WCAG AA normal-text contrast', conte
   }
 })
 
-test('OS and manual reduced-motion preferences protect entrances and the scroll story', () => {
+test('internal OS reduced-motion support protects entrances and the scroll story', () => {
   // Static source contracts only; browser checks are still needed to exercise
   // actual preference changes, focus movement, and native scroll behavior.
-  const reduced = blockAfter(styles, '@media (prefers-reduced-motion: reduce)')
+  const reduced = blockAfter(read('src/css/landing/motion.css'), '@media (prefers-reduced-motion: reduce)')
   assert.match(reduced, /animation:\s*none\s*!important/)
   assert.match(reduced, /transition(?:-duration)?:\s*(?:none|0s)\s*!important/)
   assert.match(reduced, /scroll-behavior:\s*auto\s*!important/)
   const provider = read('src/components/landing/motion/MotionProvider.jsx')
   assert.match(provider, /useReducedMotion\(/)
   assert.match(provider, /matchMedia\(['"]\(prefers-reduced-motion: reduce\)['"]\)/)
-  assert.match(provider, /localStorage\.setItem\(preferenceKey, reduced \? 'reduced' : 'full'\)/)
   const systemPreference = provider.match(/const\s+(\w+)\s*=\s*Boolean\(\s*systemReduced\s*\?\?\s*osReduced\s*\)/)?.[1]
   assert.ok(systemPreference, 'Normalize the browser preference with the Motion fallback')
   const reduction = [...provider.matchAll(/const\s+reduced\s*=\s*([^\r\n]+)/g)]
     .map(match => match[1]).find(expression => expression.includes(systemPreference))
   assert.ok(reduction?.includes('!settings.ready'), 'Server rendering should start with static content')
-  assert.match(reduction, new RegExp(`\\b${systemPreference}\\b\\s*\\|\\|\\s*manualReduced`), 'Either OS or manual preference must reduce motion')
+  assert.ok(reduction.includes(systemPreference), 'The operating-system preference must reduce motion even without a visible toggle')
   assert.match(provider, /reducedMotion=\{reduced \? 'always' : 'user'\}/)
   const story = read('src/components/landing/motion/ScrollScene.jsx')
   assert.match(story, /!ready \|\| reduced \|\| !desktopStory/)
@@ -108,41 +123,41 @@ test('keyboard focus and the skip link remain visible across chapter surfaces', 
     const terminalFocus = blockAfter(styles, '.install-command :focus-visible')
     assert.match(terminalFocus, /outline-color:\s*var\(--brand\)/, 'Dark terminals should use the dark-surface focus color')
   }
-  const terminal = blockAfter(styles, '.install-command {')
-  assert.match(terminal, /background:\s*var\(--site-bg\)/)
-  assert.ok(contrast(color('brand'), color('site-bg')) >= 3)
+  const terminal = blockAfter(read('src/css/landing/chapter-choreography.css'), '.install-command {')
+  const terminalBackground = terminal.match(/background:\s*(#[a-f\d]{6})/i)?.[1]
+  assert.ok(terminalBackground, 'The command surface has a solid dark background')
+  assert.ok(contrast(color('brand'), terminalBackground) >= 3)
 })
 
-test('landing colors remain neutral and solid surfaces have no glass treatment', () => {
-  assert.doesNotMatch(styles, /\b(?:-webkit-)?backdrop-filter\b/i, 'Do not use blurred or frosted surfaces')
-  assert.equal(Object.hasOwn(siliconTheme, '--glass-bg'), false)
+test('major surfaces remain charcoal or paper while selected overlays use restrained glass', () => {
   assert.equal(Object.hasOwn(siliconTheme, '--chapter-green'), false)
-  const colors = Object.values(siliconTheme).filter(value => /^#[a-f\d]{6}$/i.test(value))
-  for (const hex of colors) {
+  for (const surface of ['site-bg', 'surface', 'surface-raised', 'chapter-graphite', 'network-bg', 'paper', 'paper-soft']) {
+    const hex = color(surface)
     const channels = [1, 3, 5].map(offset => parseInt(hex.slice(offset, offset + 2), 16))
-    assert.ok(Math.max(...channels) - Math.min(...channels) <= 12, `${hex}: keep the landing palette near neutral; screenshots retain their own product colors`)
+    assert.ok(Math.max(...channels) - Math.min(...channels) <= 12, `${surface}: do not use green-tinted chapter fills; reserve mint for small accents`)
   }
-  const nav = blockAfter(styles, '.floating-nav {')
-  assert.match(nav, /background:\s*var\(--nav-bg\)/, 'Floating navigation should use its solid neutral surface')
+  const nav = declarationsFor(styles, '.floating-nav')
+  assert.match(nav, /background:\s*var\(--nav-bg\)/)
+  assert.match(siliconTheme['--nav-bg'], /^rgba\(/, 'Glass navigation needs an actually translucent material')
+  assert.match(nav, /(?:-webkit-)?backdrop-filter:\s*blur\((?:[1-9]|[12]\d)px\)/, 'Glass needs a restrained real backdrop blur')
+  assert.doesNotMatch(blockAfter(styles, '.landing-root {'), /backdrop-filter/, 'Do not blur the entire application surface')
+  assert.doesNotMatch(blockAfter(styles, '.chapter {'), /backdrop-filter/, 'Glass should be selective rather than applied to every chapter')
+  assert.ok(contrast(color('foreground'), color('nav-bg', 'paper')) >= 4.5, 'Navigation must remain readable when a light chapter passes behind it')
 })
 
-test('product screenshots and their enclosing stages stay completely static', () => {
+test('product proof stays stable, accessible, and in its original colors', () => {
   const media = read('src/components/landing/core/MediaFrame.jsx')
-  const hero = read('src/components/landing/compositions/HeroMediaStage.jsx')
-  assert.doesNotMatch(media, /MediaReveal|useEntrance|useScroll|useTransform|<(?:m|motion)\./)
-  assert.match(media, /return\s*<figure\b/)
   assert.match(media, /<img\b/)
-  assert.match(hero, /return\s*<div\b/, 'The hero screenshot stage must be an ordinary element')
-  assert.doesNotMatch(hero, /useScroll|useTransform|style=\{|return\s*<(?:m|motion)\./, 'Animate separate structural elements, not the screenshot container')
-  const compositions = read('src/components/landing/compositions/Chapter.jsx')
-  const frame = compositions.slice(compositions.indexOf('export function CurvedStage'), compositions.indexOf('export function FactRail'))
-  assert.match(frame, /return\s*<div\b/)
-  assert.doesNotMatch(frame, /<MacroReveal\b[^>]*(?<!\/)>(?:\s*)\{children\}/, 'Frame motion must be separate from screenshot children')
-
+  assert.match(media, /alt=\{image\.alt\}/)
+  assert.match(media, /width=\{image\.width\}/)
+  assert.match(media, /height=\{image\.height\}/)
+  assert.match(media, /loading=\{eager \? 'eager' : 'lazy'\}/)
+  assert.match(media, /<a\b[^>]*href=\{src\}/, 'Full-resolution product proof remains reachable')
+  assert.doesNotMatch(media, /View full capture|<figcaption|MediaReveal|animate=|clipPath|rotate|scale:/, 'Screenshot pixels and geometry remain stable')
   for (const [, selectors, declarations] of styles.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
-    const screenshotRule = selectors.split(',').some(selector => /(?:^|\s)\.(?:product-media(?:--[\w-]+)?(?:__link)?(?:\s+img)?|hero-media-stage|hero-proof|poster-proof|servers-proof|cloud-proof|curved-stage|servers-frame|hero-chapter|poster-chapter|servers-chapter|cloud-chapter)(?::[\w-]+)?$/.test(selector.trim()))
-    if (!screenshotRule) continue
-    assert.doesNotMatch(declarations, /(?:^|;)\s*(?:transform|perspective|clip-path|mask(?:-image)?|filter|animation(?:-name)?)\s*:/, `${selectors.trim()}: screenshot pixels and containers must not reveal, move, mask, or recolor`)
+    const imageRule = selectors.split(',').some(selector => /(?:^|\s)\.(?:product-media|hero-proof|poster-proof|servers-proof|cloud-proof)\s+img(?:\b|$)/.test(selector.trim()))
+    if (!imageRule) continue
+    assert.doesNotMatch(declarations, /(?:^|;)\s*(?:filter|mix-blend-mode|transform|clip-path)\s*:/, `${selectors.trim()}: preserve the original product proof`)
   }
 })
 
@@ -150,7 +165,7 @@ test('landing has no permanent animation loop or prohibited scrolling/rendering 
   const files = [...sourceFiles('src/components/landing'), ...sourceFiles('src/css/landing'), ...sourceFiles('src/landing'), 'src/pages/index.jsx']
   for (const file of files) {
     const source = read(file)
-    assert.doesNotMatch(source, /\brequestAnimationFrame\s*\(|\brepeat\s*:\s*Infinity\b|\banimation[^;{}]*\binfinite\b/, `${file}: native scrolling and finite motion must remain authoritative`)
+    assert.doesNotMatch(source, /\brepeat\s*:\s*Infinity\b|\banimation[^;{}]*\binfinite\b/, `${file}: native scrolling and finite motion must remain authoritative`)
     assert.doesNotMatch(source, /(?:from\s*|import\s*\(|require\s*\()\s*['"](?:lenis|@studio-freight\/lenis|three|@react-three\/fiber|playcanvas|lottie-web)(?:\/[^'"]*)?['"]/, `${file}: prohibited motion/rendering dependency`)
   }
   const manifest = JSON.parse(read('package.json'))

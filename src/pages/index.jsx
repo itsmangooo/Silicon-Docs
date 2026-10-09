@@ -11,6 +11,7 @@ import {networkTopology} from '../landing/silicon/diagrams.mjs'
 import LandingShell from '../components/landing/core/LandingShell'
 import FloatingNav from '../components/landing/core/FloatingNav'
 import MotionProvider from '../components/landing/motion/MotionProvider'
+import GlobalSignalTrace from '../components/landing/motion/GlobalSignalTrace'
 import HeroChapter from '../components/landing/sections/HeroChapter'
 import ProductChapter from '../components/landing/sections/ProductChapter'
 import ServersChapter from '../components/landing/sections/ServersChapter'
@@ -24,11 +25,17 @@ import '../css/landing/tokens.css'
 import '../css/landing/landing.css'
 import '../css/landing/architecture.css'
 import '../css/landing/motion.css'
+import '../css/landing/technical-diagrams.css'
+import '../css/landing/polish.css'
+import '../css/landing/media-motion.css'
+import '../css/landing/chapter-choreography.css'
+import '../css/landing/network-interactions.css'
+import '../css/landing/signal-trace.css'
 
 const chapters = {hero: HeroChapter, product: ProductChapter, servers: ServersChapter, aws: CloudChapter, network: NetworkChapter, architecture: ArchitectureChapter, security: SecurityChapter, install: InstallChapter}
 export default function Home() {
   const title = 'Silicon — Hybrid hosting for your own servers and the cloud'
   return <LayoutProvider><PageMetadata description={silicon.description} /><Head><title>{title}</title><meta property="og:title" content={title} /><meta name="twitter:title" content={title} /></Head>
-    <LandingShell theme={siliconTheme}><a className="landing-skip" href="#landing-main">Skip to content</a><MotionProvider storageKey="silicon-landing-motion"><FloatingNav brand={silicon} /><main id="landing-main" tabIndex="-1">{silicon.chapterOrder.map(key => {const Component = chapters[key]; return <Component key={key} content={silicon[key]} topology={networkTopology} repository={silicon.repository} />})}</main><Footer brand={silicon} /></MotionProvider></LandingShell>
+    <LandingShell theme={siliconTheme}><a className="landing-skip" href="#landing-main">Skip to content</a><MotionProvider><GlobalSignalTrace /><FloatingNav brand={silicon} /><main id="landing-main" tabIndex="-1">{silicon.chapterOrder.map(key => {const Component = chapters[key]; return <Component key={key} content={silicon[key]} topology={networkTopology} repository={silicon.repository} />})}</main><Footer brand={silicon} /></MotionProvider></LandingShell>
   </LayoutProvider>
 }

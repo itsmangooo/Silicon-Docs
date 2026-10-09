@@ -48,9 +48,16 @@ test('the eight editorial chapters have unique anchors and substantive content',
   }
 })
 
-test('chapter labels contain names without numbered markup', () => {
-  const label = readProjectFile('src/components/landing/core/ChapterLabel.jsx')
-  assert.doesNotMatch(label, /\bnumber\b/, 'Remove the old chapter-number prop and markup')
+test('landing presentation omits section eyebrows and inspection-style footer controls', () => {
+  for (const chapter of ['Hero', 'Cloud', 'Network', 'Architecture', 'Security', 'Install']) {
+    const source = readProjectFile(`src/components/landing/sections/${chapter}Chapter.jsx`)
+    assert.doesNotMatch(source, /ChapterLabel|className=['"]chapter-label/, `${chapter}: use headings instead of tiny section eyebrows`)
+  }
+  const footer = readProjectFile('src/components/landing/sections/Footer.jsx')
+  assert.doesNotMatch(footer, /Product reference|Reduce motion|motion-preference|type=['"]checkbox/, 'Release verification and OS reduced-motion support should not become decorative footer controls')
+  assert.match(footer, /Documentation/)
+  assert.match(footer, /GitHub/)
+  assert.doesNotMatch(readProjectFile('src/components/landing/sections/NetworkChapter.jsx'), /className=['"]diagram-caption/, 'Remove inspection-style annotations around the network diagram')
 })
 
 test('the product reference names an exact semantic release and commit', () => {

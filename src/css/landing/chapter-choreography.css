@@ -1,0 +1,45 @@
+/* A chapter owns its surface and reveal schedule, including the SSR state. */
+.chapter-choreography {background: transparent; box-shadow: none; overflow: hidden;}
+.chapter-entry-anchor {position: absolute; inset: 0; pointer-events: none;}
+.choreographed-surface {position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;}
+.cloud-chapter.chapter-choreography {border-radius: var(--radius-chapter);}
+.cloud-chapter .choreographed-surface {background: var(--paper); border: 1px solid rgba(255,255,255,.1);}
+.chapter-choreography-content {position: relative;}
+.cloud-title > span, .install-title > span {display: block;}
+.cloud-chapter .cloud-heading {width: min(90%, 1420px); gap: clamp(32px, 4vw, 64px);}
+.cloud-chapter .cloud-heading .lead {font-size: clamp(18px, 1.5vw, 24px); line-height: 1.6;}
+.cloud-details > .editorial-stage {width: min(90%, 1420px);}
+.cloud-chapter .fact-rail {gap: clamp(32px, 4vw, 64px);}
+.cloud-chapter .fact-rail dt {font-size: 22px; font-weight: 500; line-height: 1.4; margin-bottom: 18px;}
+.cloud-chapter .fact-rail dd {font-size: 17px; line-height: 1.6; color: var(--ink-muted);}
+.cloud-chapter .cloud-footnote .small-note {font-size: 16px; line-height: 1.6;}
+.cloud-chapter .site-button {font-size: 16px;}
+.cloud-proof .product-media__link {border-radius: var(--radius-media); overflow: hidden;}
+.install-chapter.chapter-choreography {border-radius: var(--radius-chapter) var(--radius-chapter) 0 0; color-scheme: dark;}
+.install-chapter .choreographed-surface {background: linear-gradient(160deg, #191a1a, #0e0f0f 68%); border: 1px solid rgba(255,255,255,.12); border-bottom: 0;}
+.install-command {border-radius: var(--radius-media); background: #151616; backdrop-filter: none; -webkit-backdrop-filter: none;}
+.install-command .command-heading, .install-command .command-heading button {font-size: 14px;}
+.install-command pre {font-size: clamp(14px, 1.15vw, 19px);}
+.install-chapter .install-note {font-size: 16px; line-height: 1.6;}
+.install-chapter .install-progression li {font-size: 16px; line-height: 1.6;}
+.install-chapter .install-progression span {font-size: 14px;}
+.landing-motion-layer[data-motion='reduced'] .chapter-choreography .choreographed-surface {transform: none !important; clip-path: none !important;}
+.landing-motion-layer[data-motion='reduced'] .chapter-choreography .chapter-reveal {opacity: 1 !important; visibility: visible !important; transform: none !important;}
+@media (max-width: 900px) {
+  .cloud-chapter .fact-rail {grid-template-columns: 1fr; gap: 28px;}
+  .cloud-chapter .fact-rail dt {font-size: 20px;}
+  .cloud-chapter .fact-rail dd {font-size: 16px;}
+}
+@media (max-width: 600px) {
+  .cloud-chapter.chapter-choreography {border-radius: var(--radius-chapter-mobile, 24px);}
+  .install-chapter.chapter-choreography {border-radius: var(--radius-chapter-mobile, 24px) var(--radius-chapter-mobile, 24px) 0 0;}
+  .cloud-chapter .cloud-heading, .cloud-details > .editorial-stage {width: calc(100% - 40px);}
+  .cloud-chapter .cloud-heading {gap: 24px;}
+  .cloud-chapter .cloud-heading .lead {margin-top: 0; padding-bottom: 0;}
+  .cloud-chapter .cloud-proof {width: calc(100% - 40px);}
+  .cloud-chapter .cloud-footnote .small-note {font-size: 16px;}
+}
+@media (prefers-reduced-motion: reduce) {
+  .chapter-choreography .choreographed-surface {transform: none !important; clip-path: none !important;}
+  .chapter-choreography .chapter-reveal {opacity: 1 !important; visibility: visible !important; transform: none !important;}
+}

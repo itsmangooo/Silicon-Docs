@@ -1,0 +1,20 @@
+.global-signal-trace {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 70;
+  pointer-events: none;
+}
+.decode-text {position: relative; display: inline-grid;}
+.decode-text__final, .decode-text__visual {grid-area: 1 / 1;}
+.decode-text__final {visibility: hidden;}
+.decode-text__visual {white-space: pre;}
+@media (max-width: 1099px), (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .global-signal-trace {display: none;}
+}
+.landing-motion-layer[data-motion='reduced'] .global-signal-trace {display: none;}
+@media (prefers-reduced-motion: reduce) {
+  .decode-text__final {visibility: visible;}
+  .decode-text__visual {visibility: hidden;}
+}

@@ -54,17 +54,22 @@ for (const page of pages) {
   }
 }
 const home = readFileSync(join(build, 'index.html'), 'utf8')
+// A font mentioned only by an inline custom property can be incorrectly pruned
+// by production CSS optimization. Check emitted faces, not just source imports.
+const builtCSS = files(join(build, 'assets', 'css')).filter(path => path.endsWith('.css')).map(path => readFileSync(path, 'utf8')).join('\n')
+for (const weight of [400, 500, 600]) {
+  assert.ok([...builtCSS.matchAll(/@font-face\s*\{([^}]+)\}/g)].some(([, rule]) =>
+    /font-family:\s*["']?Poppins/i.test(rule) && new RegExp(`font-weight:\\s*${weight}(?:;|$)`).test(rule)),
+  `Production output must retain the self-hosted Poppins ${weight} face`)
+}
 const h1 = home.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i)?.[1].replace(/<[^>]*>/g, ' ').trim()
 assert.ok(h1?.length > 15, 'Public landing needs a substantive semantic page heading')
 assert.equal([...home.matchAll(/<h1\b/gi)].length, 1, 'Public landing needs one primary heading')
 for (const id of silicon.chapterOrder) {
   assert.ok(home.includes(`id="${id}"`), `Landing chapter ${id} is missing`)
 }
-const chapterLabels = [...home.matchAll(/<p\b[^>]*class="[^"]*\bchapter-label\b[^"]*"[^>]*>([\s\S]*?)<\/p>/gi)]
-assert.ok(chapterLabels.length > 0, 'Landing needs descriptive chapter labels')
-for (const [, label] of chapterLabels) {
-  assert.doesNotMatch(label.replace(/<[^>]*>/g, ' ').trim(), /^\d+\b/, 'Chapter labels should contain names without section counters')
-}
+assert.doesNotMatch(home, /\bclass="[^"]*\bchapter-label\b/, 'Use semantic headings instead of tiny section eyebrows')
+assert.doesNotMatch(home, /Product reference:|Reduce motion|View full capture/, 'Do not render inspection-style labels or decorative accessibility controls')
 const diagrams = new Set([...home.matchAll(/\bdata-diagram="([^"]+)"/g)].map(match => match[1]))
 assert.ok(diagrams.size >= 3, 'Landing needs at least three distinct explanatory graphics')
 assert.ok(diagrams.has('provider-architecture'), 'Landing needs the implemented provider architecture graphic')
@@ -89,12 +94,11 @@ for (const [index, image] of productImages.entries()) {
   assert.match(image, /\bwidth="[1-9]\d*"/, 'Product image needs intrinsic width')
   assert.match(image, /\bheight="[1-9]\d*"/, 'Product image needs intrinsic height')
   assert.match(image, /\balt="[^"]+"/, 'Product image needs descriptive alternative text')
-  assert.doesNotMatch(image, /\bstyle="[^"]*(?:transform|perspective|clip-path|mask|filter|animation)\s*:/i, 'Product screenshot markup must remain static and keep its original colors')
+  assert.match(image, /\balt="[^"]*sanitized[^"]*"/i, 'Product proof must identify demo fixtures without capture-tool annotations')
+  assert.doesNotMatch(image, /\bstyle="[^"]*(?:filter|mix-blend-mode|transform|perspective|clip-path|mask|animation)\s*:/i, 'Product proof must preserve the actual interface colors and stable geometry')
   if (index === 0) assert.ok(!image.includes('loading="lazy"'), 'Hero should load without waiting for scrolling')
   else assert.ok(image.includes('loading="lazy"'), 'Below-the-fold product images must lazy load')
 }
-const visibleText = home.replace(/<[^>]*>/g, ' ')
-assert.match(visibleText, /sanitized|demonstration fixtures/i, 'Product fixtures need a visible disclosure')
 assert.ok(home.includes('property="og:title" content="Silicon'), 'Landing needs social title metadata')
 assert.ok(redirects > 40, 'Expected all existing documentation redirects')
 assert.deepEqual(failures, [], `${failures.length} generated link/redirect failures`)

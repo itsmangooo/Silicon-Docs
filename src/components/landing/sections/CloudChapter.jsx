@@ -1,13 +1,20 @@
 import React from 'react'
-import Chapter, {EditorialStage, FactRail} from '../compositions/Chapter'
-import ChapterLabel from '../core/ChapterLabel'
+import {m} from 'motion/react'
+import {EditorialStage, FactRail} from '../compositions/Chapter'
 import MediaFrame from '../core/MediaFrame'
 import Button from '../core/Button'
-import LineReveal from '../motion/LineReveal'
+import ChoreographedChapter from '../motion/ChoreographedChapter'
 export default function CloudChapter({content}) {
-  return <Chapter id={content.id} tone="paper" className="cloud-chapter">
-    <EditorialStage className="cloud-heading"><ChapterLabel>{content.label}</ChapterLabel><LineReveal variant="cascade" lines={content.title} id="aws-title" className="cloud-title" /><p className="lead">{content.description}</p></EditorialStage>
-    <MediaFrame image={content.image} crop className="cloud-proof" />
-    <EditorialStage><FactRail items={content.details} /><div className="cloud-footnote"><p className="small-note">{content.limitation}</p><Button variant="dark" href={content.link.href}>{content.link.label}</Button></div></EditorialStage>
-  </Chapter>
+  return <ChoreographedChapter id={content.id} className="chapter--paper cloud-chapter">
+    {motion => <>
+      <EditorialStage className="cloud-heading">
+        <m.h2 {...motion.heading} id="aws-title" className="chapter-reveal cloud-title">{content.title.map((line, index) => <React.Fragment key={line}><span>{line}</span>{index < content.title.length - 1 ? ' ' : null}</React.Fragment>)}</m.h2>
+        <m.p {...motion.supporting} className="chapter-reveal lead">{content.description}</m.p>
+      </EditorialStage>
+      <m.div {...motion.content} className="chapter-reveal cloud-details">
+        <MediaFrame image={content.image} crop className="cloud-proof" />
+        <EditorialStage><FactRail items={content.details} /><div className="cloud-footnote"><p className="small-note">{content.limitation}</p><Button variant="dark" href={content.link.href}>{content.link.label}</Button></div></EditorialStage>
+      </m.div>
+    </>}
+  </ChoreographedChapter>
 }

@@ -5,7 +5,6 @@ import Button from '../core/Button'
 import LineReveal from '../motion/LineReveal'
 import {useLandingMotion} from '../motion/MotionProvider'
 import useEntrance from '../motion/useEntrance'
-import BoundaryRules from '../graphics/BoundaryRules'
 
 function Mechanism({title, text, index, full, inView, duration, stagger}) {
   const controls = useEntrance({
@@ -14,14 +13,7 @@ function Mechanism({title, text, index, full, inView, duration, stagger}) {
     to: {opacity: 1, y: 0},
     transition: {duration, delay: (index + 1) * stagger},
   })
-  const rule = useEntrance({
-    full, inView,
-    from: {scaleX: 0},
-    to: {scaleX: 1},
-    transition: {duration, delay: index * stagger},
-  })
   return <m.div className="security-mechanism" initial={false} animate={controls}>
-    <m.span className="security-mechanism__rule" aria-hidden="true" initial={false} animate={rule} />
     <dt>{title}</dt><dd>{text}</dd>
   </m.div>
 }
@@ -39,7 +31,6 @@ export default function SecurityChapter({content}) {
   })
   return <Chapter id={content.id} className="security-chapter"><EditorialStage>
     <div ref={ref} className="security-composition security-boundary">
-      <BoundaryRules full={full} inView={inView} duration={duration} stagger={stagger} />
       <div className="security-statement">
         <LineReveal lines={content.title} id="security-title" className="security-title" />
         <m.div className="security-statement__support" initial={false} animate={support}>

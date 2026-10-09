@@ -44,7 +44,7 @@ export default function FloatingNav({brand}) {
     <div className={`nav-links ${open ? 'is-open' : ''}`} id="landing-navigation">
       {brand.navigation.map(link => <Link key={link.href} to={link.href} onClick={() => setOpen(false)}>{link.label}</Link>)}
     </div>
-    <Button href="#install" className="nav-install">Install {brand.name}</Button>
+    <Button href="#install" className="nav-install" aria-label={`Install ${brand.name}`}><span className="nav-install__label">Install <span className="nav-install__brand">{brand.name}</span></span></Button>
     <button type="button" className="nav-toggle" aria-expanded={open} aria-controls="landing-navigation" aria-label={open ? 'Close navigation' : 'Open navigation'} ref={toggle} onClick={() => setOpen(!open)}><span aria-hidden="true">{open ? '×' : '☰'}</span></button>
   </m.nav></header>
 }

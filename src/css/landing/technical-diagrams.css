@@ -1,0 +1,233 @@
+/* Grid tracks own every anchor. The SVG only joins those shared coordinates. */
+.landing-root .deployment-flow {
+  --flow-anchor-size: 18px;
+  width: 88%;
+  max-width: none;
+  min-width: 0;
+  margin-inline: auto;
+}
+.flow-caption {
+  margin-bottom: 30px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: center;
+}
+.flow-graph {
+  position: relative;
+  min-height: 160px;
+  padding: 0;
+}
+.flow-paths {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: var(--flow-anchor-size);
+  overflow: visible;
+}
+.flow-path-track {
+  stroke: rgba(255, 255, 255, .16);
+  stroke-width: 1.5;
+}
+.flow-path {
+  stroke: rgba(235, 237, 237, .68);
+  stroke-width: 1.8;
+}
+.flow-stages {
+  display: grid;
+  grid-template-columns: repeat(var(--flow-stage-count), minmax(0, 1fr));
+  grid-template-rows: var(--flow-anchor-size) auto auto;
+  column-gap: 0;
+  row-gap: 18px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.flow-stage {
+  position: relative;
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: 1 / 4;
+  min-width: 0;
+  padding: 0 10px;
+  text-align: center;
+}
+.flow-stage__marker {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-self: center;
+  width: var(--flow-anchor-size);
+  height: var(--flow-anchor-size);
+  margin: 0;
+  place-items: center;
+  border: 1px solid rgba(240, 241, 241, .5);
+  border-radius: 50%;
+  background: var(--chapter-graphite);
+}
+.flow-stage__marker > span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #e3e6e5;
+}
+.flow-stage__copy {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: 2 / 4;
+  min-width: 0;
+}
+.flow-stage__label {
+  display: block;
+  color: var(--foreground);
+  font-size: clamp(16px, 1.3vw, 20px);
+  font-weight: 500;
+  letter-spacing: -.025em;
+  line-height: 1.35;
+}
+.flow-stage__detail {
+  display: block;
+  margin-top: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.landing-root .server-transport {
+  width: min(100%, 680px);
+  max-width: 680px;
+  margin: 0 auto !important;
+}
+.transport-graph {
+  --transport-node-width: clamp(138px, 23%, 156px);
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--transport-node-width) minmax(0, 1fr) var(--transport-node-width);
+  grid-template-rows: 260px;
+  align-items: center;
+  width: 100%;
+}
+.transport-node {
+  position: relative;
+  z-index: 1;
+  grid-row: 1;
+  min-width: 0;
+}
+.transport-source {grid-column: 1; padding-right: 20px; text-align: left;}
+.transport-target {grid-column: 3; padding-left: 20px; text-align: right;}
+.transport-node strong {
+  display: block;
+  color: var(--foreground);
+  font-size: clamp(18px, 1.25vw, 20px);
+  font-weight: 500;
+  letter-spacing: -.025em;
+  line-height: 1.35;
+}
+.transport-node__detail {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.transport-anchor {
+  position: absolute;
+  top: 50%;
+  display: block;
+  width: 12px;
+  height: 12px;
+  margin: 0;
+  border: 2px solid #cbd0ce;
+  border-radius: 50%;
+  background: var(--surface);
+}
+.transport-source .transport-anchor {right: 0; transform: translate(50%, -50%);}
+.transport-target .transport-anchor {left: 0; transform: translate(-50%, -50%);}
+.transport-paths {
+  display: block;
+  grid-column: 2;
+  grid-row: 1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.transport-paths--vertical {display: none;}
+.transport-path {
+  stroke: rgba(224, 228, 227, .72);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.transport-path--ssh {stroke-dasharray: 6 7; stroke: rgba(198, 204, 201, .7);}
+.transport-methods {
+  position: relative;
+  grid-column: 2;
+  grid-row: 1;
+  align-self: stretch;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.transport-method {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  color: var(--foreground);
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.transport-method--local {top: 0;}
+.transport-method--ssh {bottom: 0;}
+
+@media (max-width: 600px) {
+  .landing-root .deployment-flow {width: 100%;}
+  .flow-caption {text-align: left; margin-bottom: 26px;}
+  .flow-graph {min-height: 0;}
+  .flow-paths {display: none;}
+  .flow-stages {grid-template-columns: 1fr; grid-template-rows: none; row-gap: 28px;}
+  .flow-stage {
+    grid-row: auto;
+    grid-template-columns: var(--flow-anchor-size) minmax(0, 1fr);
+    grid-template-rows: auto;
+    column-gap: 20px;
+    padding: 0;
+    text-align: left;
+  }
+  .flow-stage:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: calc(var(--flow-anchor-size) / 2 - .75px);
+    top: 13px;
+    width: 1.5px;
+    height: calc(100% + 28px);
+    background: rgba(224, 228, 227, .35);
+  }
+  .flow-stage__marker {grid-column: 1; grid-row: 1; margin-top: 4px;}
+  .flow-stage__copy {grid-column: 2; grid-row: 1; grid-template-rows: auto auto; row-gap: 8px;}
+  .flow-stage__label {font-size: 18px;}
+  .flow-stage__detail {font-size: 14px;}
+
+  .transport-graph {grid-template-columns: 1fr; grid-template-rows: auto 200px auto;}
+  .transport-node {width: 100%; text-align: center;}
+  .transport-source {grid-column: 1; grid-row: 1; padding: 0 0 24px;}
+  .transport-target {grid-column: 1; grid-row: 3; padding: 24px 0 0;}
+  .transport-node strong {font-size: 20px;}
+  .transport-node__detail {font-size: 14px;}
+  .transport-source .transport-anchor {top: auto; bottom: 0; left: 50%; right: auto; transform: translate(-50%, 50%);}
+  .transport-target .transport-anchor {top: 0; left: 50%; transform: translate(-50%, -50%);}
+  .transport-paths--horizontal {display: none;}
+  .transport-paths--vertical {display: block; grid-column: 1; grid-row: 2;}
+  .transport-methods {grid-column: 1; grid-row: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: center;}
+  .transport-method {position: static; width: auto; padding-block: 8px; font-size: 15px; background: var(--surface); border-radius: var(--radius-control);}
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flow-path,
+  .flow-stage__marker,
+  .flow-stage__copy,
+  .transport-node {opacity: 1 !important;}
+  .transport-paths > g {clip-path: none !important;}
+}

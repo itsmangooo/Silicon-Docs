@@ -1,5 +1,5 @@
 .provider-system {
-  width: min(85%, 1200px);
+  width: min(100%, 1200px);
   margin: 56px auto 40px;
 }
 .provider-system__desktop {
@@ -11,9 +11,9 @@
 }
 .provider-system__core-shape {
   fill: var(--paper);
-  stroke: var(--foreground);
-  stroke-width: 1;
+  stroke: none;
 }
+.provider-system__core-frame {fill: none; stroke: var(--foreground); stroke-width: 1.25;}
 .provider-system__core-label {
   fill: var(--ink);
   font-size: 32px;
@@ -22,7 +22,7 @@
 }
 .provider-system__core-detail {
   fill: var(--ink-muted);
-  font-size: 17px;
+  font-size: 19px;
 }
 .provider-system__node-shape {
   fill: var(--surface);
@@ -31,33 +31,34 @@
 }
 .provider-system__category {
   fill: var(--foreground);
-  font-size: 19px;
+  font-size: 22px;
   font-weight: 500;
 }
 .provider-system__implementation {
   fill: var(--muted);
-  font-size: 18px;
+  font-size: 19px;
 }
 .provider-system__path {
   stroke: var(--line);
-  stroke-width: 1;
+  stroke-width: 1.25;
 }
 .provider-system__compact {display: none;}
+.provider-system__compact-frame {position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;}
 .provider-system__legend {
   display: grid;
   gap: 24px;
   padding-top: 24px;
   border-top: 1px solid var(--rule);
-  font-size: 13px;
+  font-size: 16px;
+  line-height: 1.65;
   color: var(--muted);
 }
 .provider-system__implemented > span,
 .provider-system__extensions > p:first-child {
   display: block;
   color: var(--foreground);
-  font-size: 11px;
-  letter-spacing: .06em;
-  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
   margin-bottom: 10px;
 }
 .provider-system__extensions ul {
@@ -71,9 +72,9 @@
 .provider-system__contract {
   padding: 10px 16px;
   border: 1px dashed var(--rule-strong);
-  border-radius: 6px;
+  border-radius: var(--radius-control);
   color: var(--foreground);
-  font-size: 13px;
+  font-size: 14px;
 }
 .provider-system__contract-note {margin-top: 12px !important;}
 @media (max-width: 1100px) {
@@ -85,8 +86,8 @@
     width: min(100%, 320px);
     margin: 0 auto;
     padding: 26px 20px;
-    border: 1px solid var(--foreground);
-    border-radius: 10px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-small);
     background: var(--paper);
     color: var(--ink);
     text-align: center;
@@ -101,7 +102,10 @@
     width: 1px;
     height: 33px;
     background: var(--line);
+    transform-origin: top;
   }
+  .provider-system[data-assembly='waiting'] .provider-system__compact-core::after {transform: scaleY(0);}
+  .provider-system[data-assembly='running'] .provider-system__compact-core::after {animation: provider-spine-draw var(--assembly-line-duration) var(--assembly-spine-delay) both;}
   .provider-system__compact-list {
     position: relative;
     display: grid;
@@ -115,7 +119,7 @@
     min-width: 0;
     padding: 20px;
     border: 1px solid var(--rule-strong);
-    border-radius: 8px;
+    border-radius: var(--radius-small);
     background: var(--surface);
   }
   .provider-system__compact-node::before {
@@ -132,7 +136,7 @@
   .provider-system__compact-node:nth-child(odd)::after {left: calc(100% + 24px);}
   .provider-system__compact-node:nth-child(even)::after {right: calc(100% + 24px);}
   .provider-system__compact-node:nth-last-child(-n + 2)::after {bottom: 50%;}
-  .provider-system__compact-node dt {color: var(--foreground); font-size: 15px; font-weight: 500; margin-bottom: 8px;}
+  .provider-system__compact-node dt {color: var(--foreground); font-size: 18px; font-weight: 500; margin-bottom: 8px;}
   .provider-system__compact-node dd {margin: 0; color: var(--muted); font-size: 14px; line-height: 1.65;}
 }
 @media (max-width: 600px) {
@@ -147,4 +151,16 @@
   .provider-system__compact-node:last-child::after {bottom: 50%;}
   .provider-system__compact-core strong {font-size: 23px;}
   .provider-system__legend {gap: 20px;}
+  .provider-system__compact-core::after {transform-origin: right;}
+  .provider-system__compact-core::before {transform-origin: top;}
+  .provider-system[data-assembly='waiting'] .provider-system__compact-core::after {transform: scaleX(0);}
+  .provider-system[data-assembly='waiting'] .provider-system__compact-core::before {transform: scaleY(0);}
+  .provider-system[data-assembly='running'] .provider-system__compact-core::after {animation-name: provider-branch-draw;}
+  .provider-system[data-assembly='running'] .provider-system__compact-core::before {animation: provider-spine-draw var(--assembly-line-duration) var(--assembly-spine-delay) both;}
+}
+@keyframes provider-spine-draw {from {transform: scaleY(0);} to {transform: scaleY(1);}}
+@keyframes provider-branch-draw {from {transform: scaleX(0);} to {transform: scaleX(1);}}
+@media (prefers-reduced-motion: reduce) {
+  .provider-system .provider-system__compact-core::before,
+  .provider-system .provider-system__compact-core::after {animation: none !important; transform: none !important;}
 }

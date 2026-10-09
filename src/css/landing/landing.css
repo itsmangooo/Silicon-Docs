@@ -1,4 +1,4 @@
-.landing-root {background: var(--site-bg); color: var(--foreground); font-family: var(--font-display); font-size: var(--font-body); font-weight: 400; line-height: 1.65; overflow-x: clip; color-scheme: dark;}
+.landing-root {background: var(--site-bg); color: var(--foreground); font-family: Poppins, var(--font-display); font-size: var(--font-body); font-weight: 400; line-height: 1.65; overflow-x: clip; color-scheme: dark;}
 .landing-root *, .landing-root *::before, .landing-root *::after {box-sizing: border-box;}
 .landing-root h1, .landing-root h2, .landing-root h3, .landing-root p, .landing-root figure, .landing-root dl, .landing-root ol {margin: 0;}
 .landing-root h1, .landing-root h2 {font-family: inherit; font-weight: 500; line-height: 1.08; letter-spacing: -.045em;}
@@ -18,7 +18,6 @@
 .curved-stage {width: var(--stage-width); margin-inline: auto; border-radius: var(--radius-chapter);}
 .chapter {position: relative; scroll-margin-top: 120px; isolation: isolate;}
 .chapter-surface {position: absolute; inset: 0; z-index: -1; background: var(--chapter-background); border-radius: inherit; pointer-events: none;}
-.chapter-label {font-size: 12px; font-weight: 500; letter-spacing: .14em; line-height: 1.6; text-transform: uppercase; margin-bottom: var(--space-4) !important;}
 .lead {font-size: var(--font-lead); line-height: 1.55; letter-spacing: -.025em; max-width: var(--reading-width);}
 .small-note {font-size: 14px; color: var(--muted); line-height: 1.6; max-width: var(--reading-width);}
 .action-row {display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center;}
@@ -38,7 +37,6 @@
 .floating-header {position: fixed; top: 20px; inset-inline: 0; z-index: 100; pointer-events: none;}
 .floating-nav {pointer-events: auto; position: relative; width: min(84vw, 1180px); margin-inline: auto; display: flex; align-items: center; gap: var(--space-4); padding: 18px 16px 18px 24px; border-radius: 18px; background: var(--nav-bg); border: 1px solid var(--rule); transition: padding .3s, border-color .3s;}
 .is-scrolled .floating-nav {padding-block: 12px; border-color: var(--rule-strong);}
-.technical-label {background: var(--nav-bg); border: 1px solid var(--rule-strong); color: var(--foreground);}
 .site-brand {display: inline-flex; gap: 12px; align-items: center; font-size: 21px; font-weight: 500; letter-spacing: -.03em; flex-shrink: 0;}
 .site-brand img {object-fit: contain;}
 .nav-links {display: flex; gap: 28px; margin-left: auto; align-items: center; font-size: 14px;}
@@ -49,50 +47,31 @@
 .nav-toggle {display: none; border: 1px solid var(--rule); background: transparent; color: var(--foreground); border-radius: var(--radius-control); font-size: 21px; width: 44px; height: 44px;}
 .hero-chapter {padding-top: 162px; position: relative;}
 .hero-billboard {position: relative; padding-bottom: 140px;}
-.hero-billboard > .chapter-label {margin-bottom: 36px !important; color: var(--muted);}
 .hero-title {font-size: var(--font-hero);}
 .hero-aside {position: absolute; right: 0; top: calc(2.16 * var(--font-hero) + 58px); width: 33%; max-width: 500px;}
 .hero-aside .lead {font-size: clamp(18px, 1.4vw, 23px);}
 .hero-aside .action-row {margin-block: 24px 16px;}
 .hero-proof {width: var(--stage-width); margin-inline: auto !important; position: relative; z-index: 2; margin-bottom: -108px !important;}
 .hero-media-stage {position: relative;}
-.stage-structure__metadata {display: flex; justify-content: space-between; gap: 16px; color: var(--muted); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 10px; letter-spacing: .08em; padding-block: 16px; text-transform: uppercase;}
-.stage-structure__metadata span:last-child {text-align: right;}
-.stage-structure__lines {position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; z-index: 3;}
-.stage-structure__line {stroke: var(--rule-strong); stroke-width: 1;}
-.stage-structure__corner {stroke: var(--line); stroke-width: 1.5;}
 .product-media__link {display: block; overflow: hidden; border: 1px solid var(--rule); border-radius: var(--radius-media); background: var(--site-bg);}
 .product-media img {display: block; width: 100%; height: auto;}
 .product-media--crop .product-media__link {aspect-ratio: 1.92;}
 .product-media--crop img {height: 100%; object-fit: cover; object-position: top;}
-.product-media figcaption {display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; font-size: 11px; font-weight: 400; margin-top: 14px; color: var(--muted);}
-.product-media figcaption a {text-decoration: underline; text-underline-offset: 4px;}
 .chapter--graphite {--chapter-background: var(--chapter-graphite);}
 .chapter--charcoal {--chapter-background: var(--network-bg);}
 .chapter--paper {--chapter-background: var(--paper); --rule: #b7b7b0; color: var(--ink); color-scheme: light;}
-.chapter--paper .small-note, .chapter--paper figcaption {color: var(--ink-muted);}
+.chapter--paper .small-note {color: var(--ink-muted);}
 .poster-chapter {padding-block: 212px 100px; border-radius: 72px 72px 48px 0; margin-top: 0;}
 .poster-title {font-size: clamp(60px, 7.7vw, 126px); max-width: 1100px;}
 .poster-lead {max-width: 580px; margin: 0 !important;}
 .deployment-composition {display: grid; grid-template-columns: 1.3fr 1fr; gap: 64px; align-items: center; margin-block: 48px 64px;}
 .deployment-flow {min-width: 0;}
-.flow-caption {font-size: 11px; color: var(--muted); max-width: 420px; margin-bottom: 24px;}
-.flow-graph {position: relative;}
-.flow-paths {display: block; width: 100%; height: 64px;}
-.flow-path-track, .transport-path-track {stroke: var(--rule); stroke-width: 1;}
-.flow-path, .transport-path {stroke: var(--line); stroke-width: 1.5;}
-.flow-point, .transport-point {fill: var(--brand);}
-.flow-stages {display: grid; grid-template-columns: repeat(var(--flow-stage-count), 1fr); list-style: none; padding: 0; gap: 12px;}
-.flow-stage {font-size: 13px;}
-.flow-stage__label {display: block; font-weight: 500; color: var(--foreground);}
-.flow-stage__detail {display: block; font-size: 10px; line-height: 1.5; color: var(--muted); margin-top: 8px;}
-.flow-stage__marker {display: none;}
 .poster-proof {position: relative; width: min(88vw, 1510px); margin: 0 0 64px max(4vw, calc((100vw - 1600px) / 2)) !important;}
 .media-callout {position: absolute; right: -24px; top: 44%; width: 240px; border-radius: 2px; padding: 18px 20px; pointer-events: none;}
 .media-callout::before {content: ''; position: absolute; width: 44px; height: 1px; background: var(--brand); left: -44px; top: 26px;}
 .media-callout::after {content: ''; position: absolute; width: 4px; height: 4px; background: var(--brand); left: -46px; top: 24px;}
-.media-callout > span {display: block; font-size: 12px; font-weight: 500; color: var(--brand); margin-bottom: 8px;}
-.media-callout p {font-size: 12px; color: var(--foreground); line-height: 1.6;}
+.media-callout > span {display: block; font-size: 14px; font-weight: 500; color: var(--brand); margin-bottom: 8px;}
+.media-callout p {font-size: 14px; color: var(--foreground); line-height: 1.6;}
 .fact-rail {display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-5); margin-bottom: var(--space-5) !important;}
 .fact-rail dt {font-size: 18px; font-weight: 500; letter-spacing: -.025em; margin-bottom: var(--space-2);}
 .fact-rail dd {margin: 0; font-size: 15px; line-height: 1.7;}
@@ -104,15 +83,6 @@
 .servers-proof {align-self: end; margin-left: -6vw !important; width: calc(100% + 6vw);}
 .servers-copy {padding-top: var(--space-4); align-self: end;}
 .server-transport {margin-bottom: 36px !important;}
-.transport-caption {font-size: 10px; line-height: 1.6; color: var(--muted); margin-bottom: 12px;}
-.transport-graph {position: relative;}
-.transport-paths {width: 100%; display: block;}
-.transport-labels {position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1.2fr 1fr; align-items: center; text-align: center;}
-.transport-source, .transport-target {font-size: 11px; line-height: 1.5;}
-.transport-labels strong {font-weight: 500; display: block;}
-.transport-labels p span {font-size: 9px; display: block; color: var(--muted); margin-top: 6px;}
-.transport-methods {list-style: none; padding: 0; margin: 0; height: 100%; display: flex; flex-direction: column; justify-content: space-around; font-size: 10px;}
-.transport-method {background: var(--nav-bg); width: max-content; max-width: 100%; padding: 2px 4px; margin-inline: auto; color: var(--brand);}
 .servers-copy .lead {margin-bottom: var(--space-5); font-size: clamp(18px, 1.4vw, 23px);}
 .servers-copy .fact-rail {grid-template-columns: 1fr; gap: var(--space-4);}
 .servers-copy .fact-rail dd {color: var(--muted);}
@@ -136,34 +106,12 @@
 .story-progress .is-complete {background: var(--brand);}
 .story-stage-list {list-style: none; padding: 0;}
 .story-stage-list li {padding: 12px 0; color: var(--muted);}
-.story-stage-list li > span {font-size: 13px; letter-spacing: .08em; text-transform: uppercase;}
+.story-stage-list li > span {font-size: 14px; letter-spacing: .08em; text-transform: uppercase;}
 .story-stage-list .is-current {color: var(--brand);}
 .stage-detail h3 {color: var(--foreground); font-size: 24px; margin: 16px 0 12px;}
 .stage-detail p {font-size: 15px; line-height: 1.7; color: var(--muted);}
 .is-active .stage-detail {position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%);}
 .is-active .is-current .stage-detail {position: static; width: auto; height: auto; overflow: visible; clip-path: none;}
-.network-topology {position: relative; border: 1px solid var(--rule); border-radius: 40px 64px 40px 40px; padding: 32px 24px 52px; background: var(--surface);}
-.diagram-caption {font-size: 11px; color: var(--muted); text-align: center;}
-.network-map {position: relative; aspect-ratio: 940 / 470; margin-top: 20px;}
-.network-paths {position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible;}
-.network-path-track {stroke: var(--rule); stroke-width: 1;}
-.network-path {stroke: var(--line); stroke-width: 2;}
-.network-nodes {position: absolute; top: 0; width: 100%; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;}
-.network-node {display: flex; flex-direction: column; align-items: center; text-align: center; opacity: .26; transition: opacity .5s; font-size: 16px;}
-.network-node.is-connected {opacity: 1;}
-.node-symbol {font-family: sans-serif; font-size: 28px; border: 1px solid var(--rule); background: var(--surface); border-radius: 12px; width: 54px; height: 54px; display: grid; place-items: center; margin-bottom: 8px;}
-.network-node strong {font-weight: 500;}
-.network-node small {font-size: 11px; color: var(--muted);}
-.network-name {font-size: clamp(7px, .6vw, 12px); color: var(--brand); margin-top: 10px; overflow-wrap: anywhere;}
-.network-hub {position: absolute; top: 66%; width: 100%; display: flex; flex-direction: column; align-items: center; line-height: 1.6; font-size: 15px;}
-.hub-mark {display: grid; place-items: center; width: 50px; height: 50px; border-radius: 14px; background: var(--brand); color: var(--ink); font-size: 26px; font-weight: 500;}
-.hub-mark img {filter: brightness(0);}
-.network-hub strong {font-weight: 500;}
-.network-hub small, .network-hub > span:last-child {font-size: 10px; color: var(--muted);}
-.network-hud {position: absolute; left: 0; right: 0; margin-inline: auto; bottom: -18px; width: max-content; max-width: calc(100% - 32px); padding: 12px 18px; border-radius: 2px; font-size: 11px; white-space: nowrap;}
-.hud-dot {display: inline-block; width: 5px; height: 5px; margin-right: 8px; background: var(--brand);}
-.hud-example {display: block; font-size: 9px; color: var(--muted); padding-left: 13px; margin-top: 3px;}
-.network-access {margin-top: 32px !important; text-align: center; font-size: 11px; color: var(--brand);}
 .network-footnote {padding-block: 32px 100px; max-width: 1420px;}
 .network-footnote > p {max-width: 900px; margin-bottom: 16px;}
 .network-footnote .site-button {margin-top: 12px;}
@@ -175,14 +123,11 @@
 .architecture-title {font-size: var(--font-chapter);}
 .security-chapter {padding-block: 0 112px; background: var(--site-bg);}
 .security-boundary {position: relative; padding: var(--space-5); border: 1px solid var(--rule); border-radius: 32px 0 32px 0; background: var(--nav-bg);}
-.security-boundary-rules {position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;}
-.security-boundary-rule {stroke: var(--line); stroke-width: 1;}
 .security-statement, .security-mechanisms {position: relative; z-index: 1;}
 .security-composition {display: grid; grid-template-columns: 1.3fr 1fr; gap: 10%;}
 .security-title {font-size: clamp(44px, 4.3vw, 76px);}
 .security-statement .small-note {margin-block: 32px;}
 .security-mechanisms > div {position: relative; margin-bottom: 40px;}
-.security-mechanism__rule {display: block; width: 40px; height: 1px; background: var(--line); transform-origin: left; margin-bottom: 20px;}
 .security-mechanisms dt {font-size: 20px; font-weight: 500; margin-bottom: 12px;}
 .security-mechanisms dd {margin: 0; color: var(--muted); font-size: 15px;}
 .install-chapter {--chapter-background: var(--paper-soft); padding-block: 100px; border-radius: 72px 72px 0 0;}
@@ -191,20 +136,18 @@
 .install-heading .lead {max-width: 460px; padding-bottom: 8px;}
 .install-command {background: var(--site-bg); color: var(--foreground); border-radius: 24px; padding: 28px 32px;}
 .landing-root .install-command :focus-visible {outline-color: var(--brand);}
-.command-heading {display: flex; justify-content: space-between; align-items: center; gap: 24px; font-size: 11px; letter-spacing: .08em; color: var(--muted);}
-.command-heading button {background: transparent; color: var(--foreground); border: 1px solid var(--rule); border-radius: var(--radius-control); min-height: 44px; padding: 10px 14px; font-size: 12px; letter-spacing: 0;}
+.command-heading {display: flex; justify-content: space-between; align-items: center; gap: 24px; font-size: 14px; letter-spacing: .08em; color: var(--muted);}
+.command-heading button {background: transparent; color: var(--foreground); border: 1px solid var(--rule); border-radius: var(--radius-control); min-height: 44px; padding: 10px 14px; font-size: 14px; letter-spacing: 0;}
 .install-command pre {background: transparent; padding: 24px 0 8px; margin: 0; font-size: clamp(13px, 1.15vw, 19px); overflow-x: auto; border-radius: 0; color: var(--brand);}
 .install-command code {padding: 0; border: 0; background: transparent; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; color: inherit;}
 .install-note {margin-top: 20px !important;}
 .install-progression {display: grid; grid-template-columns: repeat(4, 1fr); list-style: none; padding: 0; gap: 24px; margin-block: 64px 48px !important;}
 .install-progression li {border-top: 1px solid var(--rule); padding-top: 16px; font-size: 15px; font-weight: 500;}
-.install-progression span {display: block; font-size: 12px; color: var(--ink-muted); margin-bottom: 16px;}
+.install-progression span {display: block; font-size: 14px; color: var(--ink-muted); margin-bottom: 16px;}
 .install-actions {display: flex; gap: 32px; flex-wrap: wrap;}
-.landing-footer {display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 32px; padding-block: 48px 40px; font-size: 13px;}
+.landing-footer {display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 32px; padding-block: 48px 40px; font-size: 14px;}
 .footer-links {display: flex; gap: 24px;}
-.motion-preference {display: flex; align-items: center; gap: 10px; cursor: pointer;}
-.motion-preference input {accent-color: var(--brand); width: 17px; height: 17px;}
-.landing-footer > p {grid-column: 1 / -1; display: flex; justify-content: space-between; gap: 24px; color: var(--muted); font-size: 12px;}
+.landing-footer > p {grid-column: 1 / -1; display: flex; justify-content: space-between; gap: 24px; color: var(--muted); font-size: 14px;}
 @media (min-width: 1800px) {.servers-proof {margin-left: -60px !important; width: calc(100% + 60px);}}
 @media (max-width: 1100px) {
   .hero-billboard {padding-bottom: var(--space-5);}
@@ -221,9 +164,6 @@
   .media-callout {right: 16px; width: 210px; padding: 14px 16px;}
   .network-sticky {grid-template-columns: 1fr; gap: 32px;}
   .story-stage-list {display: grid; grid-template-columns: 1fr 1fr; gap: 24px;}
-  .network-topology {max-width: 940px; width: 100%; margin-inline: auto;}
-  .network-name {font-size: 10px;}
-  .network-node {font-size: 18px;}
   .security-composition {gap: 48px;}
 }
 @media (max-width: 900px) {
@@ -242,33 +182,24 @@
   .security-mechanisms {display: grid; grid-template-columns: 1fr 1fr; gap: 32px;}
   .security-mechanisms > div {margin: 0;}
   .landing-footer {grid-template-columns: 1fr auto;}
-  .motion-preference {grid-column: 1 / -1;}
 }
 @media (max-width: 600px) {
   .floating-header {top: 12px;}
   .floating-nav {width: calc(100% - 24px); padding: 10px 12px; border-radius: 14px; gap: 10px;}
   .site-brand {font-size: 18px; gap: 8px;}
   .site-brand img {width: 24px; height: 24px;}
-  .nav-install {font-size: 12px; gap: 12px; padding-inline: 12px;}
+  .nav-install {font-size: 14px; gap: 12px; padding-inline: 12px;}
   .nav-toggle {width: 40px; min-width: 40px; height: 44px;}
   .hero-chapter {padding-top: 126px;}
-  .hero-billboard > .chapter-label {font-size: 10px; letter-spacing: .09em; margin-bottom: 24px !important;}
   .hero-title {line-height: 1.12;}
   .hero-aside {margin-top: 28px;}
   .hero-aside .action-row {gap: 20px;}
   .hero-proof {margin-bottom: -48px !important;}
-  .stage-structure__metadata {font-size: 8px; letter-spacing: .05em; padding-block: 12px;}
   .hero-proof .product-media__link {aspect-ratio: 1.28;}
   .hero-proof img {width: 150%; max-width: none; object-fit: cover; object-position: top left;}
-  .product-media figcaption {font-size: 10px;}
   .poster-chapter {padding-block: 110px 64px; border-radius: 32px 32px 24px 0;}
   .poster-title {font-size: var(--font-chapter);}
   .deployment-composition {margin-block: 32px; gap: 28px;}
-  .flow-stages {grid-template-columns: 1fr 1fr; gap: 20px;}
-  .flow-paths {display: none;}
-  .flow-stage__marker {display: inline-block; width: 5px; height: 5px; background: var(--brand); margin-bottom: 8px;}
-  .flow-stage__label {font-size: 14px;}
-  .flow-stage__detail {font-size: 11px;}
   .media-callout {position: relative; right: auto; top: auto; width: 100%; margin-block: 16px; padding: 16px; border-radius: 2px;}
   .media-callout::before, .media-callout::after {display: none;}
   .poster-proof {width: calc(100% - 32px); margin: 0 auto 36px !important;}
@@ -290,20 +221,6 @@
   .network-story {margin-top: 24px;}
   .story-stage-list {grid-template-columns: 1fr; gap: 0;}
   .stage-detail h3 {font-size: 23px; margin-top: 8px;}
-  .network-topology {padding: 24px 12px 56px; border-radius: 24px;}
-  .diagram-caption {font-size: 10px;}
-  .network-map {aspect-ratio: 940 / 660;}
-  .network-paths {height: 71%;}
-  .network-node {font-size: 11px; min-width: 0;}
-  .node-symbol {width: 34px; height: 34px; font-size: 19px; border-radius: 8px;}
-  .network-node small {font-size: 8px;}
-  .network-name {font-size: 7px; margin-top: 6px; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
-  .network-hub {top: 46%;}
-  .hub-mark {width: 34px; height: 34px; font-size: 22px; border-radius: 10px;}
-  .network-hub strong {font-size: 12px;}
-  .network-hub small, .network-hub > span:last-child {font-size: 8px;}
-  .network-access {font-size: 10px; margin-top: 0 !important;}
-  .network-hud {font-size: 9px; padding: 10px 12px; bottom: -20px;}
   .network-footnote {padding-bottom: 64px;}
   .architecture-chapter {padding-block: 32px 64px;}
   .architecture-title {font-size: clamp(32px, 8.2vw, 48px);}
@@ -315,12 +232,12 @@
   .install-heading {grid-template-columns: 1fr; gap: 28px; margin-bottom: 32px;}
   .install-title {font-size: clamp(80px, 23vw, 110px);}
   .install-command {padding: 20px; border-radius: 18px;}
-  .command-heading {gap: 12px; font-size: 9px;}
+  .command-heading {gap: 12px; font-size: 14px;}
   .command-heading button {white-space: nowrap; padding-inline: 10px;}
   .install-progression {grid-template-columns: 1fr 1fr; gap: 24px; margin-block: 40px !important;}
-  .install-progression li {font-size: 13px;}
+  .install-progression li {font-size: 14px;}
   .install-actions {gap: 24px;}
   .landing-footer {grid-template-columns: 1fr; padding-top: 36px; gap: 24px;}
-  .footer-links {gap: 20px; flex-wrap: wrap; font-size: 12px;}
+  .footer-links {gap: 20px; flex-wrap: wrap; font-size: 14px;}
   .landing-footer > p {flex-direction: column; gap: 12px;}
 }
