@@ -1,0 +1,7 @@
+/* One narrow gutter rail. Protected content is additionally excluded in paint. */
+.data-stream-rail {position: fixed; top: 120px; bottom: 24px; right: 6px; width: 40px; height: calc(100svh - 144px); z-index: 60; pointer-events: none;}
+@media (max-width: 1199px) {.data-stream-rail {width: 32px; right: 3px;}}
+@media (max-width: 899px), (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .data-stream-rail {display: none;}
+}
+.landing-motion-layer[data-motion='reduced'] .data-stream-rail {display: none;}

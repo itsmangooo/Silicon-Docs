@@ -131,10 +131,10 @@ test('keyboard focus and the skip link remain visible across chapter surfaces', 
 
 test('major surfaces remain charcoal or paper while selected overlays use restrained glass', () => {
   assert.equal(Object.hasOwn(siliconTheme, '--chapter-green'), false)
-  for (const surface of ['site-bg', 'surface', 'surface-raised', 'chapter-graphite', 'network-bg', 'paper', 'paper-soft']) {
+  for (const surface of ['site-bg', 'surface', 'surface-raised', 'chapter-graphite', 'network-bg', 'paper', 'paper-soft', 'brand', 'brand-soft', 'accent-strong', 'line']) {
     const hex = color(surface)
     const channels = [1, 3, 5].map(offset => parseInt(hex.slice(offset, offset + 2), 16))
-    assert.ok(Math.max(...channels) - Math.min(...channels) <= 12, `${surface}: do not use green-tinted chapter fills; reserve mint for small accents`)
+    assert.ok(Math.max(...channels) - Math.min(...channels) <= 12, `${surface}: surfaces and accents must remain monochrome`)
   }
   const nav = declarationsFor(styles, '.floating-nav')
   assert.match(nav, /background:\s*var\(--nav-bg\)/)

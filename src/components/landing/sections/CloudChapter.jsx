@@ -3,9 +3,9 @@ import {m} from 'motion/react'
 import {EditorialStage, FactRail} from '../compositions/Chapter'
 import MediaFrame from '../core/MediaFrame'
 import Button from '../core/Button'
-import ChoreographedChapter from '../motion/ChoreographedChapter'
+import PaperChapter from '../motion/PaperChapter'
 export default function CloudChapter({content}) {
-  return <ChoreographedChapter id={content.id} className="chapter--paper cloud-chapter">
+  return <PaperChapter id={content.id} className="chapter--paper cloud-chapter">
     {motion => <>
       <EditorialStage className="cloud-heading">
         <m.h2 {...motion.heading} id="aws-title" className="chapter-reveal cloud-title">{content.title.map((line, index) => <React.Fragment key={line}><span>{line}</span>{index < content.title.length - 1 ? ' ' : null}</React.Fragment>)}</m.h2>
@@ -16,5 +16,5 @@ export default function CloudChapter({content}) {
         <EditorialStage><FactRail items={content.details} /><div className="cloud-footnote"><p className="small-note">{content.limitation}</p><Button variant="dark" href={content.link.href}>{content.link.label}</Button></div></EditorialStage>
       </m.div>
     </>}
-  </ChoreographedChapter>
+  </PaperChapter>
 }

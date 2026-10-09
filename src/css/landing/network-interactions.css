@@ -1,4 +1,4 @@
-/* The topology owns its only 3D interaction and custom pointer. */
+/* The topology retains its restrained depth interaction and native pointer. */
 .network-chapter {overflow: clip;}
 .network-topology {position: relative; min-width: 0; padding: 28px 24px; border-radius: var(--radius-media); border: 1px solid var(--rule); background: var(--surface); perspective: 1200px;}
 .network-depth {transform: rotateX(var(--network-rx, 0deg)) rotateY(var(--network-ry, 0deg)); transform-style: preserve-3d; transition: transform .2s ease-out;}
@@ -31,12 +31,6 @@
 .network-glass-panel > span {display: block; font-size: 14px; color: var(--muted); margin-bottom: 7px;}
 .network-glass-panel > strong {font-size: 16px; font-weight: 500;}
 .network-access {font-size: 14px; line-height: 1.6; color: var(--muted); margin-top: 24px !important;}
-.network-reticle {display: none; position: absolute; z-index: 8; top: 0; left: 0; width: 18px; height: 18px; border: 1px solid rgba(239,242,240,.7); border-radius: 50%; transform: translate(calc(var(--reticle-x, 0px) - 9px),calc(var(--reticle-y, 0px) - 9px)); pointer-events: none;}
-.network-reticle i {position: absolute; width: 3px; height: 3px; top: 6.5px; left: 6.5px; border-radius: 50%; background: #eff2f0;}
-.network-reticle > span {position: absolute; left: 26px; top: -2px; font-size: 12px; color: #d9ddda; opacity: 0;}
-.network-topology[data-interactive='true'][data-pointer-inside='true'], .network-topology[data-interactive='true'][data-pointer-inside='true'] button {cursor: none;}
-.network-topology[data-interactive='true'][data-pointer-inside='true'] .network-reticle {display: block;}
-.network-topology:has(.network-node-button:hover) .network-reticle > span {opacity: 1;}
 @media (min-width: 1101px) {
   .network-sticky {grid-template-columns: minmax(260px,.65fr) minmax(0,2.35fr); gap: 36px;}
   .is-active > .network-sticky {min-height: calc(100svh - 130px); max-height: none; top: 105px;}
@@ -68,6 +62,4 @@
 @media (prefers-reduced-motion: reduce), (hover: none), (pointer: coarse) {
   .network-depth {transform: none !important; transition: none !important;}
   .network-nodes {transform: none;}
-  .network-reticle {display: none !important;}
-  .network-topology, .network-topology button {cursor: auto !important;}
 }

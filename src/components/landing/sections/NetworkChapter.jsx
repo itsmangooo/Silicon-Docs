@@ -34,8 +34,6 @@ function Topology({topology, stage, isStatic}) {
     const x = Math.min(bounds.width, Math.max(0, event.clientX - bounds.left))
     const y = Math.min(bounds.height, Math.max(0, event.clientY - bounds.top))
     const style = event.currentTarget.style
-    style.setProperty('--reticle-x', `${x}px`)
-    style.setProperty('--reticle-y', `${y}px`)
     style.setProperty('--network-rx', `${(y / bounds.height - .5) * -4}deg`)
     style.setProperty('--network-ry', `${(x / bounds.width - .5) * 6}deg`)
     event.currentTarget.dataset.pointerInside = 'true'
@@ -81,7 +79,6 @@ function Topology({topology, stage, isStatic}) {
       <div className="network-glass-panel"><span>{stage === 3 ? 'Discovery' : 'Transport'}</span><strong><DecodeText key={stage === 3 ? 'discovery' : 'peer'} text={stage === 3 ? '.internal discovery' : 'WireGuard peer'} active={isStatic || stage >= 0} /></strong></div>
     </div>
     <p className="network-access">{stage === 3 ? 'Same-project access · explicit cross-project policies' : 'Local → SSH → AWS → private application discovery'}</p>
-    <span className="network-reticle" aria-hidden="true"><i /><span>Inspect</span></span>
   </div>
 }
 export default function NetworkChapter({content, topology}) {

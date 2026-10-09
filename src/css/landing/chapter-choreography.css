@@ -5,6 +5,9 @@
 .cloud-chapter.chapter-choreography {border-radius: var(--radius-chapter);}
 .cloud-chapter .choreographed-surface {background: var(--paper); border: 1px solid rgba(255,255,255,.1);}
 .chapter-choreography-content {position: relative;}
+.paper-entry .cloud-title {clip-path: inset(0 0 max(0px, calc(var(--paper-title-bottom, 100000px) - var(--paper-edge, 0px))) 0);}
+.landing-motion-layer[data-motion='reduced'] .paper-entry .choreographed-surface {height: 100% !important;}
+.landing-motion-layer[data-motion='reduced'] .paper-entry .cloud-title {clip-path: none !important;}
 .cloud-title > span, .install-title > span {display: block;}
 .cloud-chapter .cloud-heading {width: min(90%, 1420px); gap: clamp(32px, 4vw, 64px);}
 .cloud-chapter .cloud-heading .lead {font-size: clamp(18px, 1.5vw, 24px); line-height: 1.6;}
@@ -40,6 +43,8 @@
   .cloud-chapter .cloud-footnote .small-note {font-size: 16px;}
 }
 @media (prefers-reduced-motion: reduce) {
+  .paper-entry .choreographed-surface {height: 100% !important;}
+  .paper-entry .cloud-title {clip-path: none !important;}
   .chapter-choreography .choreographed-surface {transform: none !important; clip-path: none !important;}
   .chapter-choreography .chapter-reveal {opacity: 1 !important; visibility: visible !important; transform: none !important;}
 }
