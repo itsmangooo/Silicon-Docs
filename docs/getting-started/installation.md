@@ -1,5 +1,7 @@
 # Installing Silicon
 
+If this is your first time using Silicon, follow [Install Silicon and publish your first site](install-walkthrough.md) for the commands and screen-by-screen steps.
+
 The supported production layout is `/opt/silicon` when installed as root and `$XDG_DATA_HOME/silicon` (normally `~/.local/share/silicon`) otherwise:
 
 ```text

@@ -19,4 +19,4 @@ Open the deployment record to inspect its persisted states and events. Then insp
 
 ![Deployment detail and event history](/img/screenshots/deployment-detail.png)
 
-For a complete two-service production walkthrough, use [Frontend + backend](../guides/frontend-backend.md).
+For a complete two-service production walkthrough, use [Frontend + backend](../guides/frontend-backend.md). To put a hostname in front of an existing application, choose [Cloudflare Tunnel](../guides/cloudflare.md) or [Nginx or Traefik](../guides/external-proxy.md).
