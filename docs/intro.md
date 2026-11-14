@@ -14,7 +14,7 @@ This site is independent from a Silicon installation. Use it to:
 - [find the right screen for a task](guides/feature-reference.md);
 - operate [self-hosted](guides/self-hosted.md) or [AWS-backed](guides/aws.md) workloads;
 - configure [GitHub](guides/github.md), [Cloudflare](guides/cloudflare.md), [system email and password recovery](guides/system-email.md), and [private networking](guides/private-networking.md);
-- publish an app through [Nginx or Traefik](guides/external-proxy.md), or use a Cloudflare Tunnel;
+- publish an app through [Caddy, Nginx, or Traefik](guides/external-proxy.md), or use a Cloudflare Tunnel;
 - understand the [modular-monolith architecture](developers/architecture.md);
 - set up a source checkout and [contribute](developers/contributing.md).
 

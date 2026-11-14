@@ -2,6 +2,8 @@
 
 Installation administrators can publish the Silicon panel itself through an existing Cloudflare Tunnel. This installation-global setting is separate from application domains owned by an organization.
 
+Already running a reverse proxy? See [how to route the Silicon panel through Caddy, Nginx, or Traefik](external-proxy.md#the-silicon-panel-is-a-separate-hostname).
+
 ```mermaid
 flowchart LR
   Internet -->|HTTPS| Cloudflare[Cloudflare edge]
