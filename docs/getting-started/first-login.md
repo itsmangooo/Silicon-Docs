@@ -18,4 +18,12 @@ Open **Members**, add an existing local user, and choose Owner, Admin, Developer
 
 ![Organization membership and roles](/img/screenshots/members.png)
 
+## Change your account email
+
+1. Open the account menu and select **Account settings**.
+2. Under **Change email**, enter the new email address and your current Silicon login password. Select **Send verification code**.
+3. Check the inbox at the new address. Enter the code in Silicon and select **Verify email**.
+
+Ask an installation administrator to [set up system mail](../guides/system-email.md) if Silicon cannot send the code.
+
 Next, follow [First deployment](first-deployment.md).
