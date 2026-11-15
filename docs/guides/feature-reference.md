@@ -49,12 +49,26 @@ Start with the [first-site walkthrough](../getting-started/install-walkthrough.m
 | **Access** | Review the active organization's role permissions. |
 | **Identity** | Manage identity-provider records. External OIDC sign-in is currently unavailable. |
 | **Audit** | Review recorded account, infrastructure and organization actions. |
+| **Settings → Platform capabilities** | Choose your organization, then check which integrations have a recorded successful check, need setup, or report a problem. Each capability links to its guide. Expand **Planned capabilities** to see workflows still to be implemented. |
 | **Settings → Updates** | Installation administrators can review and apply published stable releases. Back up the configuration and PostgreSQL first. [Administration](../getting-started/updating.md) |
 | **Settings → Public access** | Configure the installation's own hostname through a Cloudflare Tunnel. [Public access guide](public-access.md) |
 | **Settings → System email** | Set up and test mail delivery for password recovery and email verification. [Mail guide](system-email.md) |
+
+![Settings capability table showing available, unconfigured, experimental, and planned capabilities](/img/screenshots/settings-capabilities.png)
 
 ## Automate with the REST API
 
 Silicon publishes a versioned REST API under `/api/v1`. The [OpenAPI contract](https://github.com/itsmangooo/Silicon/blob/main/backend/openapi/openapi.yaml) describes supported routes and request fields. The panel authenticates with a session cookie and uses a CSRF token on writes. Organization routes apply the same membership and permission checks as the panel.
 
 Silicon does not ship a public client SDK or a separate API-token workflow. The Go AWS SDK is used internally for AWS. The [developer API guide](../developers/api.md) covers client integration and provider contracts.
+
+### Preview a Compose file
+
+The experimental validation API accepts an image-based subset of Compose and reports service names in dependency order. For now, create a separate Silicon application per image to run a project with several services.
+
+1. Sign in as a member with permission to create applications.
+2. Send `POST /api/v1/organizations/{organizationID}/compose/validate` with the session cookie and `X-CSRF-Token` header. Put the YAML in the JSON `text` field.
+3. Start with `services` and one or more named services that use `image`. You can add a command as a list, literal environment values as a map, a dependency list, and container health checks. Use long-form named volume mounts and explicit loopback or private host IPs for published TCP ports.
+4. Read `services` in the response. A validation error returns HTTP 422. Use Silicon Secrets when an application needs a credential.
+
+Validation reads up to 64 KiB of YAML. It saves no file and connects to no host or registry. Bind mounts, external resources, build contexts, YAML aliases, and host-variable expansion are outside the initial subset.
