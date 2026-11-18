@@ -6,6 +6,8 @@ Open the URL printed by the installer and choose **Register**. The first account
 
 ![Silicon registration page](/img/screenshots/register.png)
 
+If your browser suggests an application secret when you sign in, remove that saved entry for your Silicon site in the browser’s password manager. Sign in with your Silicon account email and password.
+
 ## Create an organization
 
 After registration, create the first organization from the empty dashboard. The creator becomes that organization's Owner. An organization is Silicon's tenant and security boundary: projects, applications, servers, domains, networks, provider connections, secrets, budgets, jobs, and audit events belong to it.
